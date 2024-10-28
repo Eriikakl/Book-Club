@@ -40,7 +40,7 @@ export default function CreateClubScreen({ navigation }) {
                 value={club.description}
                 onChangeText={text => setClub({...club, description: text})}
             />
-            <Button title="Create" onPress={handleCreateClub} />
+            <Button title="Create" onPress={handleCreateClub} color="#666" />
         </View>
     );
 

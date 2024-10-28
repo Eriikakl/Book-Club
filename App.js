@@ -8,12 +8,12 @@ import ClubStackScreen from './screens/ClubStack'
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
-  return (
+export default function App() {
+  return (
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          tabBarIcon: ({ color, size}) => {
+          tabBarIcon: ({ color, size }) => {
             let iconName;
 
             if (route.name === "Home") {
@@ -23,12 +23,22 @@ export default function App() {
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
-            
+
           },
           tabBarActiveTintColor: 'lightblue',
           tabBarInactiveTintColor: 'gray',
         })}>
-        <Tab.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
+        <Tab.Screen
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: "lightblue"
+            },
+            headerTintColor: "black",
+            headerTitleStyle: {
+              fontWeight: 'bold'
+            },
+          }} name="Home" component={HomeScreen} />
         <Tab.Screen options={{ headerShown: false }} name="Clubs" component={ClubStackScreen} />
       </Tab.Navigator>
     </NavigationContainer>

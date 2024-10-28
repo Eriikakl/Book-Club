@@ -8,8 +8,8 @@ export default function ClubDetailsScreen({ route }) {
 
     return (
         <View style={styles.container}>
-            <Text>{club.name}</Text>
-            <Text>{club.description}</Text>
+            <Text style={{fontSize: 28}}>{club.name}</Text>
+            <Text style={{fontSize: 24}}>{club.description}</Text>
         </View>
     );
 }
@@ -17,7 +17,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        padding: 20
+        
     },
 });

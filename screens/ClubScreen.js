@@ -43,7 +43,7 @@ export default function ClubsScreen({ navigation }) {
                                 fontSize: 18,
                                 backgroundColor: 'lightblue',
                                 padding: 20,
-                                width: "80%",
+                                width: "90%",
                                 marginVertical: 8,
                                 marginHorizontal: 16,
                             }}>
@@ -53,10 +53,6 @@ export default function ClubsScreen({ navigation }) {
                     </TouchableOpacity>
                 )}
 
-            />
-            <Button
-                title="Create"
-                onPress={() => navigation.navigate('CreateClub')}
             />
         </View>
     );
