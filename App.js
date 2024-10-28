@@ -2,8 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import HomeScreen from './screens/Home'
-import ClubScreen from './screens/Club'
+import HomeScreen from './screens/HomeScreen'
+import ClubStackScreen from './screens/ClubStack'
 
 
 const Tab = createBottomTabNavigator();
@@ -28,8 +28,8 @@ export default function App() {
           tabBarActiveTintColor: 'lightblue',
           tabBarInactiveTintColor: 'gray',
         })}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Clubs" component={ClubScreen} />
+        <Tab.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
+        <Tab.Screen options={{ headerShown: false }} name="Clubs" component={ClubStackScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
