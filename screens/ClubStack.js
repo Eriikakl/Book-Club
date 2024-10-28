@@ -3,6 +3,7 @@ import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
 import ClubsScreen from './ClubScreen';
 import ClubDetailsScreen from './ClubDetails';
 import CreateClubScreen from './CreateClub';
+import BookRestApi from '../components/BookApi';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,20 @@ export default function ClubsStackScreen({ navigation }) {
             <Stack.Screen name="CreateClub" component={CreateClubScreen} 
             options={{
                 title: 'New Book Club',
+                headerStyle: {
+                    backgroundColor: "lightblue"
+                },
+
+                headerTintColor: "black",
+                headerTitleStyle: {
+                    fontWeight: 'bold'
+                },
+            }}  />
+
+            {/* Search book for Book Club */} 
+            <Stack.Screen name="BookApi" component={BookRestApi}
+             options={{
+                title: 'Search book',
                 headerStyle: {
                     backgroundColor: "lightblue"
                 },
