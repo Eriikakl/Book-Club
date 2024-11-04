@@ -1,16 +1,17 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
+import { Button } from 'react-native';
 import ClubsScreen from './ClubScreen';
-import ClubDetailsScreen from './ClubDetails';
-import CreateClubScreen from './CreateClub';
+import ClubDetailsScreen from './ClubDetailsScreen';
+import CreateClubScreen from './CreateClubScreen';
 import BookRestApi from '../components/BookApi';
+import ChatScreen from './ChatScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function ClubsStackScreen({ navigation }) {
     return (
         <Stack.Navigator >
-            {/* List of Book Clubs */} 
+            {/* List of Book Clubs */}
             <Stack.Screen name="Club" component={ClubsScreen}
 
                 options={{
@@ -34,47 +35,61 @@ export default function ClubsStackScreen({ navigation }) {
                     ),
                 }} />
 
-            {/* Details of Book Club */} 
+            {/* Details of Book Club */}
             <Stack.Screen name="ClubDetails" component={ClubDetailsScreen}
-             options={{
-                title: 'Details',
-                headerStyle: {
-                    backgroundColor: "lightblue"
-                },
+                options={{
+                    title: 'Details',
+                    headerStyle: {
+                        backgroundColor: "lightblue"
+                    },
 
-                headerTintColor: "black",
-                headerTitleStyle: {
-                    fontWeight: 'bold'
-                },
-            }}  />
+                    headerTintColor: "black",
+                    headerTitleStyle: {
+                        fontWeight: 'bold'
+                    },
+                }} />
 
-            {/* Create new Book Club -form */} 
-            <Stack.Screen name="CreateClub" component={CreateClubScreen} 
-            options={{
-                title: 'New Book Club',
-                headerStyle: {
-                    backgroundColor: "lightblue"
-                },
+            {/* Create new Book Club -form */}
+            <Stack.Screen name="CreateClub" component={CreateClubScreen}
+                options={{
+                    title: 'New Book Club',
+                    headerStyle: {
+                        backgroundColor: "lightblue"
+                    },
 
-                headerTintColor: "black",
-                headerTitleStyle: {
-                    fontWeight: 'bold'
-                },
-            }}  />
+                    headerTintColor: "black",
+                    headerTitleStyle: {
+                        fontWeight: 'bold'
+                    },
+                }} />
 
-            {/* Search book for Book Club */} 
+            {/* Search book for Book Club */}
             <Stack.Screen name="BookApi" component={BookRestApi}
-             options={{
-                title: 'Search book',
-                headerStyle: {
-                    backgroundColor: "lightblue"
-                },
+                options={{
+                    title: 'Search book',
+                    headerStyle: {
+                        backgroundColor: "lightblue"
+                    },
 
-                headerTintColor: "black",
-                headerTitleStyle: {
-                    fontWeight: 'bold'
-                },
-            }}  />
+                    headerTintColor: "black",
+                    headerTitleStyle: {
+                        fontWeight: 'bold'
+                    },
+                }} />
+
+            {/* Chat for Book Club */}
+            <Stack.Screen name="ChatScreen" component={ChatScreen}
+                options={{
+                    title: 'Chat',
+                    headerStyle: {
+                        backgroundColor: "lightblue"
+                    },
+
+                    headerTintColor: "black",
+                    headerTitleStyle: {
+                        fontWeight: 'bold'
+                    },
+                }} />
         </Stack.Navigator>
     );
 }

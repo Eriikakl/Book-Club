@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 
 // yhteys projektiin
@@ -8,13 +8,12 @@ import { getDatabase, ref, onValue } from 'firebase/database';
 
 const database = getDatabase(app);
 
-// Sivulla lista klubeista
+// Sivulla lista kirjapiireistä
 export default function ClubsScreen({ navigation }) {
-    const [club, setClub] = useState({ name: "", description: "" });
     const [clubs, setClubs] = useState([]);
 
 
-    // Haetaan klubit tietokannasta
+    // Haetaan kirjapiirit tietokannasta
     useEffect(() => {
         const clubsRef = ref(database, "/clubs");
 
@@ -31,12 +30,12 @@ export default function ClubsScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-
             <FlatList
                 data={clubs}
                 renderItem={({ item }) => (
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('ClubDetails', { club: item })}
+                        // välitetään kirjapiirin tietoihin clubin tiedot, sekä kirjan tiedot
+                        onPress={() => navigation.navigate('ClubDetails', { club: item, book: item.book })}
                     >
                         <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                             <Text style={{

@@ -2,8 +2,14 @@ import { useState } from 'react';
 
 import { View, StyleSheet, FlatList, TextInput, Button, TouchableOpacity, Text } from "react-native";
 
-export default function BookRestApi({ navigation }) {
+// yhteys projektiin
+import { app } from '../firebaseConfig';
+// yhteys projektin palveluihin
+import { getDatabase, ref, update } from 'firebase/database';
 
+const database = getDatabase(app);
+
+export default function BookRestApi({ navigation, route }) {
 
     const [keyword, setKeyword] = useState("");
     const [books, setBooks] = useState([]);
@@ -20,6 +26,19 @@ export default function BookRestApi({ navigation }) {
             .catch(error => console.error(error))
     }
 
+
+    const handleSave = async (book) => {
+        const club = route.params.club; // Otetaan klubin tiedot vastaan
+        const clubsRef = ref(database, `/clubs/${club.id}`);
+
+        try {
+            await update(clubsRef, { book: book.volumeInfo.title }); // Tallennetaan kirjan tieto tietylle klubille
+            console.log("Kirja tallennettu klubiin:", club.name, book.volumeInfo.title);
+            navigation.navigate('ClubDetails', { club, book: book.volumeInfo.title }); // Navigoidaan takaisin klubin sivulle
+        } catch (error) {
+            console.error("Virhe kirjan tallentamisessa:", error);
+        }
+    };
     return (
         <View style={styles.container}>
             <View >
@@ -34,10 +53,7 @@ export default function BookRestApi({ navigation }) {
                 <FlatList
                     data={books}
                     renderItem={({ item }) => (
-                        <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate('ClubDetails', { book: item });
-                        }}
+                        <TouchableOpacity onPress={() => handleSave(item)}
                         >
                             <View style={{ flexDirection: "row", justifyContent: 'center' }}>
                                 <Text style={{
