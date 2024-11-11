@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import { View, TextInput, Button } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useUser } from '../components/UserContext';
 
 const auth = getAuth();
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { login } = useUser();
 
     const handleLogin = async () => {
         try {
 
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user; // Käyttäjän tiedot
+            const user = userCredential.user;
             console.log("User logged in:", user.email);
-            navigation.navigate("Home")
+            login({
+                email: user.email,
+                username: user.email.split('.')[0],
+            });
+
         } catch (error) {
             console.error("Error logging in user:", error);
         }
