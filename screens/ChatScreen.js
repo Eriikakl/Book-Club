@@ -10,14 +10,14 @@ import { getDatabase, ref, onValue, push } from 'firebase/database';
 const database = getDatabase(app);
 
 export default function ChatScreen({ route }) {
-    const { club } = route.params;
+    const { club, user } = route.params;
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const flatListRef = useRef(null);
 
     // Haetaan viestit tietokannasta
     useEffect(() => {
-        const msgRef = ref(database, `/messages/${club.id}`);
+        const msgRef = ref(database, `/messages/${club.name}`);
 
         const unsubscribe = onValue(msgRef, (snapshot) => {
             const data = snapshot.val();
@@ -35,10 +35,11 @@ export default function ChatScreen({ route }) {
     // Viestin lähetys
     const handleSendMessage = async () => {
         if (newMessage.trim()) {
-            const msgRef = ref(database, `/messages/${club.id}`);
+            const msgRef = ref(database, `/messages/${club.name}`);
             const newMsg = {
                 text: newMessage,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                user: user.username
             };
             // Tallennetaan Firebaseen
             await push(msgRef, newMsg);
@@ -64,6 +65,7 @@ export default function ChatScreen({ route }) {
                                 minute: '2-digit'
 
                             })}
+                            <Text> @{item.user.charAt(0).toUpperCase() + user.username.slice(1)}</Text>
                         </Text>
                         <Text>{item.text}</Text>
                     </View>
