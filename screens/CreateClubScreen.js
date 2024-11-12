@@ -10,7 +10,7 @@ const database = getDatabase(app);
 
 export default function CreateClubScreen({ navigation }) {
 
-    const [club, setClub] = useState({ name: "", description: "", book: "" });
+    const [club, setClub] = useState({ name: "", description: "", books: [] });
 
     const handleCreateClub = () => {
         const clubsRef = ref(database, '/clubs');
@@ -18,10 +18,11 @@ export default function CreateClubScreen({ navigation }) {
 
         // Luodaan klubidata, joka sisältää automaattisesti luodun ID:n
         const clubData = {
+            image: "",
             id: newClubRef.key,
             name: club.name,
             description: club.description,
-            book: club.book // tyhjät kirjatiedot
+            books: [] // tyhjät kirjatiedot
         };
         set(newClubRef, clubData)
             .then(() => {
