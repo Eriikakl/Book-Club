@@ -29,13 +29,13 @@ const LoginScreen = () => {
     return (
         <View style={{ justifyContent: "center", alignItems: "center", marginTop: 200 }}>
             <TextInput
-
+                style={{width: '50%', borderWidth:1, borderColor: "lightgrey"}}
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
             />
             <TextInput
-
+                style={{width: '50%', borderWidth:1, borderColor: "lightgrey"}}
                 placeholder="Password"
                 secureTextEntry
                 value={password}
