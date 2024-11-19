@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import ClubsScreen from './ClubScreen';
 import ClubDetailsScreen from './ClubDetailsScreen';
 import CreateClubScreen from './CreateClubScreen';
@@ -8,7 +8,7 @@ import ChatScreen from './ChatScreen';
 
 const Stack = createNativeStackNavigator();
 
-export default function ClubsStackScreen({ navigation }) {
+export default function ClubsStackScreen() {
     return (
         <Stack.Navigator >
             {/* List of Book Clubs */}
@@ -24,15 +24,6 @@ export default function ClubsStackScreen({ navigation }) {
                     headerTitleStyle: {
                         fontWeight: 'bold'
                     },
-
-                    headerRight: () => (
-                        <Button
-                            onPress={() => navigation.navigate('CreateClub')}
-                            title="Create new"
-                            color="#666"
-                        />
-
-                    ),
                 }} />
 
             {/* Details of Book Club */}
