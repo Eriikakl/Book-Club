@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 
 import * as ImagePicker from 'expo-image-picker';
 
-
+import { getAuth } from 'firebase/auth';
 
 // yhteys projektiin
 import { app } from '../firebaseConfig';
 // yhteys projektin palveluihin
-import { getDatabase, ref, set, get, onValue, query, orderByKey, limitToLast, update } from 'firebase/database';
+import { getDatabase, ref, set, get, onValue, query, orderByKey, limitToLast, update, increment } from 'firebase/database';
 
 const database = getDatabase(app);
 
@@ -19,8 +19,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
     const { user } = useUser();
     const [isFollowing, setIsFollowing] = useState(false);
     const [book, setBook] = useState([]);
-    const [clubinfo, setClubinfo] = useState();
-    const [imageUrl, setImageUrl] = useState();
+    const [isCreator, setIsCreator] = useState(false);
 
     // hakee viimeisimmän lisätyn kirjan 
     useEffect(() => {
@@ -37,22 +36,31 @@ export default function ClubDetailsScreen({ route, navigation }) {
         })
     }, []);
 
-    // haetaan klubin tiedot
+    // Tarkastetaan onko käyttäjä ryhmän luoja
     useEffect(() => {
-        const clubRef = ref(database, `clubs/${club.id}`);
+        const checkIfCreator = async () => {
+            const auth = getAuth();
+            const currentUser = auth.currentUser;
 
-        onValue(clubRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                setClubinfo(Object.values(data));
-                const imageUrli = Object.values(data)[2];
-                setImageUrl(imageUrli)
+            if (!currentUser) {
+                setIsCreator(false);
+                return;
             }
-            else {
-                setClubinfo([]);
+            const clubRef = ref(database, `clubs/${club.id}`);
+            const snapshot = await get(clubRef);
+
+            if (snapshot.exists()) {
+                const clubData = snapshot.val();
+                setIsCreator(clubData.creator === currentUser.uid); // Tarkista, onko käyttäjä luoja
+            } else {
+                console.error("Klubia ei löytynyt.");
             }
-        })
-    }, []);
+
+        };
+
+        checkIfCreator();
+    }, [club.id]);
+
 
     // Profiilikuvan valinta
     const pickImage = async () => {
@@ -111,11 +119,17 @@ export default function ClubDetailsScreen({ route, navigation }) {
                     await set(ref(database, 'users/' + user.username + '/following/' + club.name), null);
                     setIsFollowing(false);
                     console.log('Olet lopettanut seuraamisen.');
+                    await update(ref(database, `clubs/${club.id}`), {
+                        followers: increment(-1) // Vähennetään yhdellä
+                    });
                 } else {
                     // Lisätään seuraaminen
                     await set(ref(database, 'users/' + user.username + '/following/' + club.name), true);
                     setIsFollowing(true);
                     console.log('Olet alkanut seurata.');
+                    await update(ref(database, `clubs/${club.id}`), {
+                        followers: increment(1) // Lisätään yhdellä
+                    });
                 }
             } catch (error) {
                 console.error("Error updating following:", error);
@@ -128,9 +142,9 @@ export default function ClubDetailsScreen({ route, navigation }) {
         <View style={styles.container}>
             <View style={styles.top}>
             
-                {imageUrl ? (
+                {club.image ? (
                     <Image
-                        source={{ uri: imageUrl }}
+                        source={{ uri: club.image }}
                         style={styles.image}
                     />
                 ) : isFollowing && (
@@ -138,6 +152,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
                 )}
             </View>
             <View style={styles.top}><Text style={{ fontSize: 28 }}>{club.name}</Text>
+            <Text>{club.followers} jäsentä</Text>
             <Text style={{ fontSize: 16 }}>{club.description}</Text></View>
             
             <View style={styles.afterTop}>
@@ -160,7 +175,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
             <View style={styles.booktitle}>
 
                 <Text style={{ fontSize: 18 }}>Luettava kirja:</Text>
-                {isFollowing && (
+                {(isFollowing && isCreator) &&  (
                     <>
                         <Button title="Hae kirja" onPress={() => navigation.navigate('BookApi', { club })} color="#666" />
                     </>

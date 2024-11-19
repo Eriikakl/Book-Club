@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
 
+import { getAuth } from "firebase/auth";
+
 // yhteys projektiin
 import { app } from '../firebaseConfig';
 // yhteys projektin palveluihin
@@ -10,11 +12,20 @@ const database = getDatabase(app);
 
 export default function CreateClubScreen({ navigation }) {
 
-    const [club, setClub] = useState({ name: "", description: "", books: [] });
+    const [club, setClub] = useState({ name: "", description: "", books: [], image: "", creator: null });
 
    
 
     const handleCreateClub = () => {
+
+        const auth = getAuth(); 
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            alert("Käyttäjä ei ole kirjautunut sisään");
+            return;
+        }
+        const creatorId = currentUser.uid;
+
         const clubsRef = ref(database, '/clubs');
         
         // Hae klubit ja tarkista, onko samannimistä
@@ -35,7 +46,9 @@ export default function CreateClubScreen({ navigation }) {
                         id: newClubRef.key,
                         name: club.name,
                         description: club.description,
-                        books: [] // tyhjät kirjatiedot
+                        books: [], // tyhjät kirjatiedot
+                        creator: creatorId,
+                        followers: 0
                     };
     
                     set(newClubRef, clubData)
