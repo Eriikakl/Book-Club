@@ -9,12 +9,12 @@ import * as ImagePicker from 'expo-image-picker';
 // yhteys projektiin
 import { app } from '../firebaseConfig';
 // yhteys projektin palveluihin
-import { getDatabase, ref, set, get, onValue, query, orderByKey, limitToLast, push } from 'firebase/database';
+import { getDatabase, ref, set, get, onValue, query, orderByKey, limitToLast, update } from 'firebase/database';
 
 const database = getDatabase(app);
 
 export default function ClubDetailsScreen({ route, navigation }) {
-    // otetaan tiedot vastaan kirjapiiristä sekä kirjasta
+    // otetaan kirjapiirin tiedot vastaan kirjapiirilistauksesta
     const { club } = route.params;
     const { user } = useUser();
     const [isFollowing, setIsFollowing] = useState(false);
@@ -45,9 +45,8 @@ export default function ClubDetailsScreen({ route, navigation }) {
             const data = snapshot.val();
             if (data) {
                 setClubinfo(Object.values(data));
-                const imageUrli = Object.values(data)[0];
-                setImageUrl(imageUrli.image)
-                console.log(imageUrli.image);
+                const imageUrli = Object.values(data)[2];
+                setImageUrl(imageUrli)
             }
             else {
                 setClubinfo([]);
@@ -74,7 +73,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
             const imageUri = result.assets[0].uri;
             //  tallennetaan tietokantaan
             const clubsRef = ref(database, `clubs/${club.id}`);
-            await push(clubsRef, { image: imageUri });
+            await update(clubsRef, { image: imageUri });
             console.log("Kuva tallennettu onnistuneesti tietokantaan:", imageUri);
         }
     };
@@ -128,7 +127,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.top}>
-
+            
                 {imageUrl ? (
                     <Image
                         source={{ uri: imageUrl }}
@@ -137,49 +136,45 @@ export default function ClubDetailsScreen({ route, navigation }) {
                 ) : isFollowing && (
                     <Button title="Pick an image" onPress={pickImage} />
                 )}
-                <Text style={{ fontSize: 28 }}>{club.name}</Text>
             </View>
-
-
+            <View style={styles.top}><Text style={{ fontSize: 28 }}>{club.name}</Text>
+            <Text style={{ fontSize: 16 }}>{club.description}</Text></View>
+            
             <View style={styles.afterTop}>
                 <Button
-                    title={isFollowing ? 'Lopeta seuraaminen' : 'Seuraa'}
+                    title={isFollowing ? 'Poistu' : 'Liity'}
                     onPress={handleFollow}
                 />
-            </View>
-            <View style={{ backgroundColor: "lightblue", padding: 20, borderRadius: 30, margin: 10 }}>
-                <Text style={{ fontSize: 16 }}>{club.description}</Text>
-            </View>
-
-
-
-            <View style={styles.book}>
-
-                <Text style={{ fontSize: 18 }}>Luettava kirja:</Text>
-                {book.image && <Image source={{ uri: book.image }} style={{ width: 100, height: 150 }} />}
-                {book.title ? (
-                    <Text style={{ fontSize: 16 }}>{book.title}</Text>
-                ) : (
-                    <Text style={{ fontSize: 16 }}>Ei kirjaa valittuna</Text>
-                )}
-                {isFollowing && (
-                    <>
-                        <Button title="Search book" onPress={() => navigation.navigate('BookApi', { club })} color="#666" />
-                    </>
-                )}
-
-            </View>
-            <View style={styles.chat}>
                 {isFollowing && (
                     <>
 
                         <Button
-                            title="Avaa keskustelu"
+                            title="Keskustelu"
                             onPress={() => navigation.navigate('ChatScreen', { club, user })}
                             color="#666"
                         />
                     </>
                 )}
+            </View>
+
+            <View style={styles.booktitle}>
+
+                <Text style={{ fontSize: 18 }}>Luettava kirja:</Text>
+                {isFollowing && (
+                    <>
+                        <Button title="Hae kirja" onPress={() => navigation.navigate('BookApi', { club })} color="#666" />
+                    </>
+                )}
+
+            </View>
+            <View style={styles.book}>
+            {book.image && <Image source={{ uri: book.image }} style={{ width: 100, height: 150 }} />}
+                {book.title ? (
+                    <Text style={{ fontSize: 16 }}>{book.title}</Text>
+                ) : (
+                    <Text style={{ fontSize: 16 }}>Ei kirjaa valittuna</Text>
+                )}
+                
             </View>
         </View>
     );
@@ -199,23 +194,30 @@ const styles = StyleSheet.create({
     },
     top: {
         alignItems: "center",
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: 'space-around'
     },
     afterTop: {
-        alignItems: "flex-end",
+        marginTop: 10,
+        alignItems: "flex-start",
         flexDirection: "row",
-        justifyContent: 'flex-end'
+        justifyContent: 'space-evenly'
+    },
+    booktitle: {
+        alignItems: "baseline",
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        marginTop: 20,
+        borderTopWidth: 1,
+        borderColor: "lightgrey",
+        paddingTop: 10,
+        fontWeight: '800',
+
     },
     book: {
+        marginTop: 10,
         alignItems: "flex-start",
-        flexDirection: "Column",
-        justifyContent: 'space-between'
-    },
-    chat: {
-        marginTop: 60,
-        alignItems: "flex-start",
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: 'space-evenly'
     },
 });

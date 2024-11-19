@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity,Image } from 'react-native';
 import { useState, useEffect } from 'react';
 
 // yhteys projektiin
@@ -46,6 +46,14 @@ export default function ClubsScreen({ navigation }) {
                                 marginVertical: 8,
                                 marginHorizontal: 16,
                             }}>
+                                {item.image ? (
+                    <Image
+                        source={{ uri: item.image }}
+                        style={styles.image}
+                    />
+                ) : (
+                    <Text>ei kuvaa</Text>
+                )}
                                 {item.name}
                             </Text>
                         </View>
@@ -53,6 +61,9 @@ export default function ClubsScreen({ navigation }) {
                 )}
 
             />
+            <TouchableOpacity onPress={() => navigation.navigate('CreateClub')}>
+                            <Text style={{ marginRight: 10, color: '#666' }}>Create new</Text>
+                        </TouchableOpacity>
         </View>
     );
 }
@@ -65,4 +76,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 10
     },
+    image: {
+        width: 100,
+        height: 100,
+    }
 });
