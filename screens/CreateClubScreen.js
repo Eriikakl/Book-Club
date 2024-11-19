@@ -4,7 +4,7 @@ import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
 // yhteys projektiin
 import { app } from '../firebaseConfig';
 // yhteys projektin palveluihin
-import { getDatabase, ref, push, set } from 'firebase/database';
+import { ref, push, set, get, query, orderByChild, equalTo, getDatabase } from "firebase/database";
 
 const database = getDatabase(app);
 
@@ -12,27 +12,47 @@ export default function CreateClubScreen({ navigation }) {
 
     const [club, setClub] = useState({ name: "", description: "", books: [] });
 
+   
+
     const handleCreateClub = () => {
         const clubsRef = ref(database, '/clubs');
-        const newClubRef = push(clubsRef);
-
-        // Luodaan klubidata, joka sisältää automaattisesti luodun ID:n
-        const clubData = {
-            image: "",
-            id: newClubRef.key,
-            name: club.name,
-            description: club.description,
-            books: [] // tyhjät kirjatiedot
-        };
-        set(newClubRef, clubData)
-            .then(() => {
-                console.log("Club created:", clubData);
-                navigation.goBack();
+        
+        // Hae klubit ja tarkista, onko samannimistä
+        const clubQuery = query(clubsRef, orderByChild("name"), equalTo(club.name));
+    
+        get(clubQuery)
+            .then((snapshot) => {
+                if (snapshot.exists()) {
+                    // Jos saman niminen klubi löytyy, näytä viesti
+                    console.error("Club with the same name already exists.");
+                    alert("A club with the same name already exists. Please choose a different name.");
+                } else {
+                    // Luodaan uusi klubi, koska samannimistä ei ole
+                    const newClubRef = push(clubsRef);
+    
+                    const clubData = {
+                        image: "",
+                        id: newClubRef.key,
+                        name: club.name,
+                        description: club.description,
+                        books: [] // tyhjät kirjatiedot
+                    };
+    
+                    set(newClubRef, clubData)
+                        .then(() => {
+                            console.log("Club created:", clubData);
+                            navigation.goBack();
+                        })
+                        .catch((error) => {
+                            console.error("Error creating club:", error);
+                        });
+                }
             })
             .catch((error) => {
-                console.error("Error creating club:", error);
+                console.error("Error checking for existing clubs:", error);
             });
     };
+    
 
     return (
         <View style={styles.container}>
