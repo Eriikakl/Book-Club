@@ -108,6 +108,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
     }, [user, club.name]);
 
 
+
     // suorittaa seuraamiseen tai seuraamisen lopettamiseen tarvittavat toiminnot
     const handleFollow = async () => {
         if (user) {
@@ -141,20 +142,27 @@ export default function ClubDetailsScreen({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.top}>
-            
                 {club.image ? (
                     <Image
                         source={{ uri: club.image }}
                         style={styles.image}
                     />
-                ) : isFollowing && (
-                    <Button title="Pick an image" onPress={pickImage} />
+                ) : (
+                    <View>
+                        <Image
+                            source={require('../components/images/empty.png')}
+                            style={styles.image}
+                        />
+                        {isFollowing && (
+                            <Button title="Pick an image" onPress={pickImage} />
+                        )}
+                    </View>
                 )}
             </View>
             <View style={styles.top}><Text style={{ fontSize: 28 }}>{club.name}</Text>
-            <Text>{club.followers} jäsentä</Text>
-            <Text style={{ fontSize: 16 }}>{club.description}</Text></View>
-            
+                <Text>{club.followers} jäsentä</Text>
+                <Text style={{ fontSize: 16 }}>{club.description}</Text></View>
+
             <View style={styles.afterTop}>
                 <Button
                     title={isFollowing ? 'Poistu' : 'Liity'}
@@ -175,7 +183,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
             <View style={styles.booktitle}>
 
                 <Text style={{ fontSize: 18 }}>Luettava kirja:</Text>
-                {(isFollowing && isCreator) &&  (
+                {(isFollowing && isCreator) && (
                     <>
                         <Button title="Hae kirja" onPress={() => navigation.navigate('BookApi', { club })} color="#666" />
                     </>
@@ -183,13 +191,13 @@ export default function ClubDetailsScreen({ route, navigation }) {
 
             </View>
             <View style={styles.book}>
-            {book.image && <Image source={{ uri: book.image }} style={{ width: 100, height: 150 }} />}
+                {book.image && <Image source={{ uri: book.image }} style={{ width: 100, height: 150 }} />}
                 {book.title ? (
                     <Text style={{ fontSize: 16 }}>{book.title}</Text>
                 ) : (
                     <Text style={{ fontSize: 16 }}>Ei kirjaa valittuna</Text>
                 )}
-                
+
             </View>
         </View>
     );
