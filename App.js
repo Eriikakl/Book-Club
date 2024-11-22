@@ -53,8 +53,8 @@ export default function App() {
 
                       return <Ionicons name={iconName} size={size} color={color} />;
                     },
-                    tabBarActiveTintColor: 'lightblue',
-                    tabBarInactiveTintColor: 'gray',
+                    tabBarActiveTintColor: '#695F5F',
+                    tabBarInactiveTintColor: 'lightgray',
                   })}>
                   <Tab.Screen
                     name="Home"
@@ -62,7 +62,7 @@ export default function App() {
                     options={{
                       headerShown: true,
                       headerStyle: {
-                        backgroundColor: "lightblue",
+                        backgroundColor: "#cfbaba",
                       },
                       headerTintColor: "black",
                       headerTitleStyle: {

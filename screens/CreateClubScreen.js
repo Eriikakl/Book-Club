@@ -16,10 +16,18 @@ export default function CreateClubScreen({ navigation }) {
     const [club, setClub] = useState({ name: "", description: "", books: [], image: "", creator: null, tags: [] });
 
     const tagOptions = [
+        { label: 'Adventure', value: 'adventure' },
+        { label: 'True crime', value: 'true crime' },
         { label: 'Fantasy', value: 'fantasy' },
         { label: 'Sci-Fi', value: 'scifi' },
         { label: 'Mystery', value: 'mystery' },
         { label: 'Classic', value: 'classic' },
+        { label: 'Dystopian', value: 'dystopian' },
+        { label: 'Horror', value: 'horror' },
+        { label: 'Thriller', value: 'thriller' },
+        { label: 'Historical fiction', value: 'historical fiction' },
+        { label: 'Romance', value: 'romance' },
+        { label: 'Young adult', value: 'young adult' },
     ];
 
     // Käsitellään valitut tagit
@@ -135,6 +143,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        backgroundColor: '#fafaf7'
     },
     title: {
         fontSize: 24,
@@ -158,7 +167,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
     },
     selectedTag: {
-        backgroundColor: '#0066cc',
+        backgroundColor: '#cfbaba',
     },
     tagText: {
         fontSize: 16,

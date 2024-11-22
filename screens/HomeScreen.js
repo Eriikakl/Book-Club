@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 // yhteys projektiin
 import { app } from '../firebaseConfig';
 // yhteys projektin palveluihin
-import { getDatabase, ref, set, get, onValue } from 'firebase/database';
+import { getDatabase, ref, onValue } from 'firebase/database';
 
 const database = getDatabase(app);
 
@@ -59,7 +59,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafaf7',
     alignItems: 'center',
     justifyContent: 'center',
   },

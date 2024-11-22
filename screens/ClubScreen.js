@@ -38,14 +38,15 @@ export default function ClubsScreen({ navigation }) {
                         onPress={() => navigation.navigate('ClubDetails', { club: item, book: item.book })}
                     >
                         <View style={{
-
-                            backgroundColor: 'lightblue',
+                            
+                            backgroundColor: '#695F5F',
                             padding: 20,
                             marginVertical: 8,
                             marginHorizontal: 16,
                             width: "350",
                             flexDirection: "row",
                             justifyContent: "flex-start"
+                            
                         }}>
                             {item.image ? (
                                 <Image
@@ -59,13 +60,13 @@ export default function ClubsScreen({ navigation }) {
                                 />
                             )}
                             <View style={{ flexDirection: 'column', justifyContent: 'flex-start', width: '70%' }}>
-                                <Text style={{ fontSize: 20, marginLeft: 20 }} numberOfLines={1}>
+                                <Text style={{ fontSize: 20, marginLeft: 20, color: "white" }} numberOfLines={1}>
                                     {item.name}
                                 </Text>
-                                <Text style={{ fontSize: 16, marginLeft: 20 }} numberOfLines={1} ellipsizeMode="tail">
+                                <Text style={{ fontSize: 16, marginLeft: 20, color: "white" }} numberOfLines={1} ellipsizeMode="tail">
                                     {item.description}
                                 </Text>
-                                <Text style={{ fontSize: 14, marginLeft: 20, flexWrap: 'wrap', marginTop:20 }} numberOfLines={2} ellipsizeMode="tail">
+                                <Text style={{ fontSize: 14, marginLeft: 20, flexWrap: 'wrap', marginTop:20, color: "white" }} numberOfLines={2} ellipsizeMode="tail">
                                     {item.tags.map((tag, index) => (
                                         <Text key={index} style={{ marginRight: 10 }}>
                                             #{tag.label} 
@@ -88,7 +89,7 @@ export default function ClubsScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#fafaf7',
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 10

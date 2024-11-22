@@ -17,7 +17,7 @@ export default function ClubsStackScreen() {
                 options={{
                     title: "Book Clubs",
                     headerStyle: {
-                        backgroundColor: "lightblue"
+                        backgroundColor: "#cfbaba"
                     },
 
                     headerTintColor: "black",
@@ -31,7 +31,7 @@ export default function ClubsStackScreen() {
                 options={{
                     title: 'Details',
                     headerStyle: {
-                        backgroundColor: "lightblue"
+                        backgroundColor: "#cfbaba"
                     },
 
                     headerTintColor: "black",
@@ -45,7 +45,7 @@ export default function ClubsStackScreen() {
                 options={{
                     title: 'New Book Club',
                     headerStyle: {
-                        backgroundColor: "lightblue"
+                        backgroundColor: "#cfbaba"
                     },
 
                     headerTintColor: "black",
@@ -59,7 +59,7 @@ export default function ClubsStackScreen() {
                 options={{
                     title: 'Search book',
                     headerStyle: {
-                        backgroundColor: "lightblue"
+                        backgroundColor: "#cfbaba"
                     },
 
                     headerTintColor: "black",
@@ -73,7 +73,7 @@ export default function ClubsStackScreen() {
                 options={{
                     title: 'Chat',
                     headerStyle: {
-                        backgroundColor: "lightblue"
+                        backgroundColor: "#cfbaba"
                     },
 
                     headerTintColor: "black",

@@ -205,7 +205,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+         backgroundColor: '#fafaf7',
         padding: 20
 
     },
