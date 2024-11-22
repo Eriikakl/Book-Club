@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import MultiSelect from 'react-native-select-multiple';
 
 import { getAuth } from "firebase/auth";
 
@@ -12,13 +13,31 @@ const database = getDatabase(app);
 
 export default function CreateClubScreen({ navigation }) {
 
-    const [club, setClub] = useState({ name: "", description: "", books: [], image: "", creator: null });
+    const [club, setClub] = useState({ name: "", description: "", books: [], image: "", creator: null, tags: [] });
 
-   
+    const tagOptions = [
+        { label: 'Fantasy', value: 'fantasy' },
+        { label: 'Sci-Fi', value: 'scifi' },
+        { label: 'Mystery', value: 'mystery' },
+        { label: 'Classic', value: 'classic' },
+    ];
 
+    // Käsitellään valitut tagit
+    const handleTagSelect = (selectedValue) => {
+        const selectedTag = tagOptions.find(tag => tag.value === selectedValue); 
+        setClub((prevClub) => {
+            const isSelected = prevClub.tags.some(tag => tag.value === selectedTag.value); 
+            const updatedTags = isSelected
+                ? prevClub.tags.filter(tag => tag.value !== selectedTag.value)
+                : [...prevClub.tags, selectedTag]; 
+            return { ...prevClub, tags: updatedTags }; 
+        });
+    };
+
+    // Tallennetaan luotu klubi
     const handleCreateClub = () => {
 
-        const auth = getAuth(); 
+        const auth = getAuth();
         const currentUser = auth.currentUser;
         if (!currentUser) {
             alert("Käyttäjä ei ole kirjautunut sisään");
@@ -27,10 +46,10 @@ export default function CreateClubScreen({ navigation }) {
         const creatorId = currentUser.uid;
 
         const clubsRef = ref(database, '/clubs');
-        
-        // Hae klubit ja tarkista, onko samannimistä
+
+        // Tarkistetaan, ettei lisätä saman nimistä klubia
         const clubQuery = query(clubsRef, orderByChild("name"), equalTo(club.name));
-    
+
         get(clubQuery)
             .then((snapshot) => {
                 if (snapshot.exists()) {
@@ -40,7 +59,7 @@ export default function CreateClubScreen({ navigation }) {
                 } else {
                     // Luodaan uusi klubi, koska samannimistä ei ole
                     const newClubRef = push(clubsRef);
-    
+
                     const clubData = {
                         image: "",
                         id: newClubRef.key,
@@ -48,9 +67,10 @@ export default function CreateClubScreen({ navigation }) {
                         description: club.description,
                         books: [], // tyhjät kirjatiedot
                         creator: creatorId,
-                        followers: 0
+                        followers: 0,
+                        tags: club.tags
                     };
-    
+
                     set(newClubRef, clubData)
                         .then(() => {
                             console.log("Club created:", clubData);
@@ -65,7 +85,7 @@ export default function CreateClubScreen({ navigation }) {
                 console.error("Error checking for existing clubs:", error);
             });
     };
-    
+
 
     return (
         <View style={styles.container}>
@@ -82,6 +102,28 @@ export default function CreateClubScreen({ navigation }) {
                 value={club.description}
                 onChangeText={text => setClub({ ...club, description: text })}
             />
+            <ScrollView style={{ maxHeight: 200 }}>
+                {tagOptions.map((item) => (
+                    <TouchableOpacity
+                        key={item.value}
+                        style={[
+                            styles.tagButton,
+                            club.tags.some(tag => tag.value === item.value) && styles.selectedTag, // Tarkista value
+                        ]}
+                        onPress={() => handleTagSelect(item.value)} // Välitä pelkkä value
+                    >
+                        <Text
+                            style={[
+                                styles.tagText,
+                                club.tags.some(tag => tag.value === item.value) && styles.selectedTagText,
+                            ]}
+                        >
+                            #{item.label}
+                        </Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
+
             <Button title="Create" onPress={handleCreateClub} color="#666" />
         </View>
     );
@@ -104,5 +146,25 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginBottom: 15,
         paddingHorizontal: 10,
+    },
+    tagButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        marginVertical: 5,
+        marginRight: 10,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        backgroundColor: '#f5f5f5',
+    },
+    selectedTag: {
+        backgroundColor: '#0066cc',
+    },
+    tagText: {
+        fontSize: 16,
+        color: '#333',
+    },
+    selectedTagText: {
+        color: '#fff',
     },
 });
