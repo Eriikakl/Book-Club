@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import MultiSelect from 'react-native-select-multiple';
 
 import { getAuth } from "firebase/auth";
 
@@ -32,13 +31,13 @@ export default function CreateClubScreen({ navigation }) {
 
     // Käsitellään valitut tagit
     const handleTagSelect = (selectedValue) => {
-        const selectedTag = tagOptions.find(tag => tag.value === selectedValue); 
+        const selectedTag = tagOptions.find(tag => tag.value === selectedValue);
         setClub((prevClub) => {
-            const isSelected = prevClub.tags.some(tag => tag.value === selectedTag.value); 
+            const isSelected = prevClub.tags.some(tag => tag.value === selectedTag.value);
             const updatedTags = isSelected
                 ? prevClub.tags.filter(tag => tag.value !== selectedTag.value)
-                : [...prevClub.tags, selectedTag]; 
-            return { ...prevClub, tags: updatedTags }; 
+                : [...prevClub.tags, selectedTag];
+            return { ...prevClub, tags: updatedTags };
         });
     };
 
@@ -116,9 +115,9 @@ export default function CreateClubScreen({ navigation }) {
                         key={item.value}
                         style={[
                             styles.tagButton,
-                            club.tags.some(tag => tag.value === item.value) && styles.selectedTag, // Tarkista value
+                            club.tags.some(tag => tag.value === item.value) && styles.selectedTag,
                         ]}
-                        onPress={() => handleTagSelect(item.value)} // Välitä pelkkä value
+                        onPress={() => handleTagSelect(item.value)}
                     >
                         <Text
                             style={[
@@ -126,7 +125,7 @@ export default function CreateClubScreen({ navigation }) {
                                 club.tags.some(tag => tag.value === item.value) && styles.selectedTagText,
                             ]}
                         >
-                            #{item.label}
+                            {item.label}
                         </Text>
                     </TouchableOpacity>
                 ))}
@@ -138,7 +137,6 @@ export default function CreateClubScreen({ navigation }) {
 
 }
 
-// Tyylit
 const styles = StyleSheet.create({
     container: {
         flex: 1,
