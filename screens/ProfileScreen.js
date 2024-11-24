@@ -36,30 +36,30 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <View style={{ fontSize: 20, justifyContent: 'flex-end' }}>
-      <Text style={{ fontSize: 28, justifyContent: 'flex-start' }}>Seuraamasi lukupiirit:</Text>
-      {clubNames ? (
-        clubNames.length > 0 ? (
-          clubNames.map((club, index) => (
-            <View key={index} style={{
-              backgroundColor: '#695F5F',
-              padding: 20,
-              marginVertical: 8,
-              marginHorizontal: 16,
-              width: "300",
-              flexDirection: "row",
-              justifyContent: "center"
-      
-            }}>
-            <Text key={index}>{club}</Text>
-            </View>
-          ))
+        <Text style={{ fontSize: 28, justifyContent: 'flex-start' }}>Seuraamasi lukupiirit:</Text>
+        {clubNames ? (
+          clubNames.length > 0 ? (
+            clubNames.map((club, index) => (
+              <View key={index} style={{
+                backgroundColor: '#ede4e4',
+                padding: 20,
+                marginVertical: 8,
+                marginHorizontal: 16,
+                width: "300",
+                flexDirection: "row",
+                justifyContent: "flex-start"
+
+              }}>
+                <Text style={{ fontSize: 20 }} key={index}>{club}</Text>
+              </View>
+            ))
+          ) : (
+            <Text>Et seuraa yhtäkään lukupiiriä</Text>
+          )
         ) : (
-          <Text>Et seuraa yhtäkään lukupiiriä</Text>
-        )
-      ) : (
-        <Text>Ladataan seuraamiasi lukupiirejä...</Text>
-      )}
-    </View>
+          <Text>Ladataan seuraamiasi lukupiirejä...</Text>
+        )}
+      </View>
     </View>
   );
 }
@@ -69,9 +69,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 2,
     backgroundColor: '#fafaf7',
-    justifyContent:'flex-start',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 20,
   },
- 
+
 });
