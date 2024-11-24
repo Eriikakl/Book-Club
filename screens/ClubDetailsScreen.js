@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Button, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import { Button } from 'react-native-paper';
 import { useUser } from '../components/UserContext';
 import { useState, useEffect } from 'react';
 
@@ -20,6 +21,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
     const [isFollowing, setIsFollowing] = useState(false);
     const [book, setBook] = useState([]);
     const [isCreator, setIsCreator] = useState(false);
+    const [books, setBooks] = useState([]);
 
     // hakee viimeisimmän lisätyn kirjan 
     useEffect(() => {
@@ -36,6 +38,21 @@ export default function ClubDetailsScreen({ route, navigation }) {
         })
     }, []);
 
+    //Haetaan lukuhistoria
+    useEffect(() => {
+        const bookRef = ref(database, `clubs/${club.id}/books`);
+        onValue(bookRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const booksArray = Object.values(data);
+                setBooks(booksArray.reverse()); // käännetään tuoreimmat ensin
+            } else {
+                setBooks([]);
+            }
+        });
+    }, [club.id]);
+
+
     // Tarkastetaan onko käyttäjä ryhmän luoja
     useEffect(() => {
         const checkIfCreator = async () => {
@@ -51,7 +68,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
 
             if (snapshot.exists()) {
                 const clubData = snapshot.val();
-                setIsCreator(clubData.creator === currentUser.uid); // Tarkista, onko käyttäjä luoja
+                setIsCreator(clubData.creator === currentUser.uid);
             } else {
                 console.error("Klubia ei löytynyt.");
             }
@@ -79,10 +96,9 @@ export default function ClubDetailsScreen({ route, navigation }) {
 
         if (!result.canceled) {
             const imageUri = result.assets[0].uri;
-            //  tallennetaan tietokantaan
             const clubsRef = ref(database, `clubs/${club.id}`);
             await update(clubsRef, { image: imageUri });
-            console.log("Kuva tallennettu onnistuneesti tietokantaan:", imageUri);
+            console.log("Kuva tallennettu onnistuneesti:", imageUri);
         }
     };
 
@@ -90,7 +106,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
     useEffect(() => {
         if (user) {
             const checkFollowingStatus = async () => {
-                const userFollowingRef = ref(database, `users/${user.username}/following/${club.name}`);
+                const userFollowingRef = ref(database, `clubs/${club.id}/followers/${user.username}`);
 
                 try {
                     const snapshot = await get(userFollowingRef);
@@ -111,30 +127,40 @@ export default function ClubDetailsScreen({ route, navigation }) {
 
     // suorittaa seuraamiseen tai seuraamisen lopettamiseen tarvittavat toiminnot
     const handleFollow = async () => {
-        if (user) {
+        if (user && club) {
 
             try {
-                // Jos käyttäjä ei ole vielä seurannut, lisätään seuraaminen
+                // haetaan klubin seuraajat
+                const clubRef = ref(database, `clubs/${club.id}/followers`);
+                const snapshot = await get(clubRef);
+                const followers = snapshot.val() || {};
+
+                // poistetaan seuraaminen
                 if (isFollowing) {
-                    // Poistetaan seuraaminen
-                    await set(ref(database, 'users/' + user.username + '/following/' + club.name), null);
+                    await set(ref(database, `users/${user.username}/following/${club.name}`), null); // poistetaan klubin tiedot käyttäjän tiedoista
                     setIsFollowing(false);
                     console.log('Olet lopettanut seuraamisen.');
+
+                    const updatedFollowers = { ...followers };
+                    delete updatedFollowers[user.username];
+                    await set(ref(database, `clubs/${club.id}/followers`), updatedFollowers); // poistetaan käyttäjä klubin seuraajista
                     await update(ref(database, `clubs/${club.id}`), {
-                        followers: increment(-1) // Vähennetään yhdellä
+                        followersCount: increment(-1), // vähennetään seuraajien määrää
                     });
                 } else {
-                    // Lisätään seuraaminen
-                    await set(ref(database, 'users/' + user.username + '/following/' + club.name), true);
+                    // seurataan
+                    await set(ref(database, `users/${user.username}/following/${club.name}`), true); // lisätään klubin tiedot käyttäjän tietoihin
                     setIsFollowing(true);
                     console.log('Olet alkanut seurata.');
+
+                    const updatedFollowers = { ...followers, [user.username]: true };
+                    await set(ref(database, `clubs/${club.id}/followers`), updatedFollowers); // lisätään käyttäjä klubin seuraajaksi
                     await update(ref(database, `clubs/${club.id}`), {
-                        followers: increment(1) // Lisätään yhdellä
+                        followersCount: increment(1), // lisätään seuraajien määrää
                     });
                 }
             } catch (error) {
                 console.error("Error updating following:", error);
-                console.log('Virhe', 'Seuraamisen tallentamisessa tapahtui virhe.');
             }
         }
     };
@@ -143,69 +169,127 @@ export default function ClubDetailsScreen({ route, navigation }) {
         <View style={styles.container}>
             <View style={styles.top}>
                 {club.image ? (
-                    <Image
-                        source={{ uri: club.image }}
-                        style={styles.image}
-                    />
-                ) : (
-                    <View>
+                    // klubilla on kuva
+                    <TouchableOpacity onPress={isFollowing ? pickImage : null}>
                         <Image
-                            source={require('../components/images/empty.png')}
+                            source={{ uri: club.image }}
                             style={styles.image}
                         />
-                        {isFollowing && (
-                            <Button title="Pick an image" onPress={pickImage} />
-                        )}
+                    </TouchableOpacity>
+                ) : (
+                    // klubilla ei ole kuvaa annetaan valmis empty kuva
+                    <View>
+                        <TouchableOpacity onPress={isFollowing ? pickImage : null}>
+                            <Image
+                                source={require('../components/images/empty.png')}
+                                style={styles.image}
+                            />
+                        </TouchableOpacity>
+
                     </View>
                 )}
             </View>
             <View style={styles.top}><Text style={{ fontSize: 28 }}>{club.name}</Text>
-                <Text>{club.followers} jäsentä</Text>
+                <Text>{club.followersCount > 0 ? club.followersCount : 0} jäsentä</Text>
                 <Text style={{ fontSize: 16 }}>{club.description}</Text></View>
 
             <View style={styles.afterTop}>
                 <Button
-                    title={isFollowing ? 'Poistu' : 'Liity'}
+                    labelStyle={{ color: 'black' }}
+                    mode="outlined"
                     onPress={handleFollow}
-                />
+                >{isFollowing ? 'Poistu' : 'Liity'}
+                </Button>
                 {isFollowing && (
                     <>
 
                         <Button
-                            title="Keskustelu"
+                            labelStyle={{ color: 'black' }}
+                            mode="outlined"
                             onPress={() => navigation.navigate('ChatScreen', { club, user })}
-                            color="#666"
+                        >Keskustelu</Button>
+                    </>
+                )}
+            </View>
+            <ScrollView style={{ maxHeight: 400 }}>
+                <View style={styles.booktitle}>
+                    <Text style={{ fontSize: 18 }}>Luettava kirja:</Text>
+                    {(isFollowing && isCreator) && (
+                        <>
+                            <Button
+                                labelStyle={{ color: 'black' }}
+                                mode="outlined"
+                                onPress={() => navigation.navigate('BookApi', { club })}
+                            >Hae kirja</Button>
+                        </>
+                    )}
+                </View>
+                <View style={styles.book}>
+                    {book.image && <Image source={book.image === "Unknown" ? require('../components/images/noimage.png') : { uri: book.image }} style={{ width: 100, height: 150 }} />}
+                    {book.title ? (
+                        <Text style={{
+                            fontSize: 16,
+                            maxWidth: 115,
+                            overflow: 'hidden',
+                            flexShrink: 1
+                        }}
+                            numberOfLines={1}
+                            ellipsizeMode="tail">
+                            {book.title}
+                        </Text>
+                    ) : (
+                        <Text style={{ fontSize: 16 }}>Ei kirjaa valittuna</Text>
+                    )}
+
+                </View>
+                <View style={styles.booktitle}>
+                    <Text style={{ fontSize: 18 }}>Lukuhistoria:</Text>
+                </View>
+                <View style={styles.books}>
+                    {books.length > 0 ? (
+                        <FlatList
+                            data={books}
+                            horizontal={true}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item }) => (
+                                <View>
+                                    {item.image && (
+                                        <Image source={item.image === "Unknown" ? require('../components/images/noimage.png') : { uri: item.image }} style={{ width: 100, height: 150 }} />
+                                    )}
+                                    <View>
+                                        <Text style={{
+                                            fontSize: 16,
+                                            maxWidth: 100,
+                                            overflow: 'hidden',
+                                            flexShrink: 1
+                                        }}
+                                            numberOfLines={1}
+                                            ellipsizeMode="tail"
+                                        >{item.title}
+                                        </Text>
+                                        {item.author && (
+                                            <Text>Kirjoittaja: {item.author}</Text>
+                                        )}
+                                    </View>
+                                </View>
+                            )}
+                            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+                            initialNumToRender={10}
+                            windowSize={5}
                         />
-                    </>
-                )}
-            </View>
+                    ) : (
+                        <Text>Ei kirjoja saatavilla</Text>
+                    )}
 
-            <View style={styles.booktitle}>
-
-                <Text style={{ fontSize: 18 }}>Luettava kirja:</Text>
-                {(isFollowing && isCreator) && (
-                    <>
-                        <Button title="Hae kirja" onPress={() => navigation.navigate('BookApi', { club })} color="#666" />
-                    </>
-                )}
-
-            </View>
-            <View style={styles.book}>
-                {book.image && <Image source={{ uri: book.image }} style={{ width: 100, height: 150 }} />}
-                {book.title ? (
-                    <Text style={{ fontSize: 16 }}>{book.title}</Text>
-                ) : (
-                    <Text style={{ fontSize: 16 }}>Ei kirjaa valittuna</Text>
-                )}
-
-            </View>
+                </View>
+            </ScrollView>
         </View>
     );
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-         backgroundColor: '#fafaf7',
+        backgroundColor: '#fafaf7',
         padding: 20
 
     },
@@ -242,5 +326,11 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         flexDirection: "column",
         justifyContent: 'space-evenly'
+    },
+    books: {
+        marginTop: 10,
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
     },
 });
