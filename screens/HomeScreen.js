@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
 import { useUser } from '../components/UserContext';
 import { useState, useEffect } from 'react';
 
@@ -11,56 +11,96 @@ const database = getDatabase(app);
 
 export default function HomeScreen() {
   const { user } = useUser();
-  const [clubs, setClubs] = useState(null);
+  const [topClubs, setTopClubs] = useState([]);
 
-  // Haetaan käyttäjän klubit tietokannasta
+  // Haetaan suosituimmat klubit 
   useEffect(() => {
-    if (user && user.username) {
-      const clubRef = ref(database, `/users/${user.username}/following`);
+    const clubsRef = ref(database, '/clubs');
+    const unsubscribe = onValue(clubsRef, (snapshot) => {
+      const clubsData = snapshot.val();
+      if (clubsData) {
+        const allClubs = Object.keys(clubsData).map((clubId) => {
+          const followersCount = clubsData[clubId]?.followersCount || 0;
+          return { clubId, followersCount };
+        });
+        allClubs.sort((a, b) => b.followersCount - a.followersCount);
+        const topTwoClubs = allClubs.slice(0, 2);
 
-      const unsubscribe = onValue(clubRef, (snapshot) => {
-        const data = snapshot.val();
-        if (data) {
-          // Suodatetaan seuratut klubit, joilla arvo on `true`
-          const followedClubs = Object.keys(data).filter((clubName) => data[clubName] === true);
-          setClubs(followedClubs); // Tallennetaan klubien nimet
-        } else {
-          setClubs([]);
-        }
-      });
+        const topClubsWithNames = [];
+        topTwoClubs.forEach((club) => {
+          const clubRef = ref(database, `/clubs/${club.clubId}`);
+          onValue(clubRef, (clubSnapshot) => {
+            const clubData = clubSnapshot.val();
+            if (clubData) {
+              topClubsWithNames.push({
+                clubId: club.clubId,
+                clubName: clubData.name,
+                followersCount: club.followersCount,
+              });
+            }
+          });
+        });
+        setTopClubs(topClubsWithNames);
+      } else {
+        setTopClubs([]);
+      }
+    });
 
-      return () => unsubscribe();
-    }
-  }, [user]);
+    return () => unsubscribe();
+  }, []);
+
+
 
   return (
     <View style={styles.container}>
-      {user ? (
-        <Text>Welcome back, {user.username.charAt(0).toUpperCase() + user.username.slice(1)}!</Text>
-      ) : (
-        <Text>Please log in to access this feature.</Text>
-      )}
-      <Text>Your Followed Clubs:</Text>
-      {clubs ? (
-        clubs.length > 0 ? (
-          clubs.map((club, index) => (
-            <Text key={index}>{club}</Text> // Näytetään seurattujen klubien nimet
-          ))
+
+
+      <View style={{ fontSize: 20 }}>
+        {user ? (
+          <Text style={{ fontSize: 20 }}>Tervetuloa takaisin, {user.username.charAt(0).toUpperCase() + user.username.slice(1)}!</Text>
         ) : (
-          <Text>No clubs followed</Text>
-        )
-      ) : (
-        <Text>Loading followed clubs...</Text>
-      )}
+          <Text style={{ fontSize: 20 }}>Kirjaudu, jotta näet kaikki ominaisuudet.</Text>
+        )}
+      </View>
+
+      <View style={{}}>
+        <Text style={{ fontSize: 24, justifyContent: 'flex-start' }}>Suosituimmat lukupiirit:</Text>
+        {topClubs ? (
+          topClubs.length > 0 ? (
+            topClubs.map((club, index) => (
+              <View key={index} style={{
+                backgroundColor: '#ede4e4',
+                padding: 20,
+                marginVertical: 8,
+                marginHorizontal: 16,
+                width: "300",
+                flexDirection: "row",
+                justifyContent: "flex-start"
+
+              }}>
+                <Text>{club.clubName} - {club.followersCount} jäsentä</Text>
+              </View>
+            ))
+          ) : (
+            <Text>Et seuraa yhtäkään lukupiiriä</Text>
+          )
+        ) : (
+          <Text>Ladataan seuraamiasi lukupiirejä...</Text>
+        )}
+        <Text style={{ fontSize: 24, justifyContent: 'flex-start' }}>Luetuimmat kirjat:</Text>
+      </View>
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     backgroundColor: '#fafaf7',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20,
   },
+
 });
