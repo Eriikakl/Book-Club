@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, FlatList, StyleSheet, } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 
 // yhteys projektiin
 import { app } from '../firebaseConfig';
@@ -49,10 +50,10 @@ export default function ChatScreen({ route }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>{club.name} - Keskustelu</Text>
+            <Text style={styles.title}>{club.name}</Text>
             <FlatList
                 ref={flatListRef}
-                data={messages} // viestit
+                data={messages}
 
                 renderItem={({ item }) => (
                     <View style={styles.messageItem}>
@@ -72,13 +73,19 @@ export default function ChatScreen({ route }) {
                 )}
             />
             <TextInput
-                multiline
+                mode="outlined"
                 style={styles.input}
-                placeholder="message.."
+                placeholder="Kirjoita viesti.."
                 value={newMessage}
                 onChangeText={setNewMessage}
+                right={<TextInput.Icon icon="send" onPress={handleSendMessage} />}
+                onKeyPress={({ nativeEvent }) => {
+                    if (nativeEvent.key === 'Enter') {
+                        handleSendMessage();
+                    }
+                }}
             />
-            <Button title="Send" onPress={handleSendMessage} />
+            
         </View>
     );
 }
@@ -96,11 +103,9 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 16,
-        paddingHorizontal: 8,
+        backgroundColor: "white",
+        
+        
     },
     messageItem: {
         padding: 10,
