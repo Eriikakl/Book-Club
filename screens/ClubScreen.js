@@ -63,7 +63,9 @@ export default function ClubsScreen({ navigation }) {
                     >
                         <View
                             style={{
-                                backgroundColor: '#ede4e4',
+                                backgroundColor: '#fafaf7',
+                                borderColor:"lightgrey",
+                                borderBottomWidth: 1,
                                 padding: 20,
                                 marginVertical: 8,
                                 marginHorizontal: 16,
@@ -87,7 +89,7 @@ export default function ClubsScreen({ navigation }) {
                                 <Text style={{ fontSize: 14, marginLeft: 20, marginTop: 20, color: '#695F5F', fontFamily: 'Barlow_400Regular' }} numberOfLines={2} ellipsizeMode="tail">
                                     {item.tags.map((tag, index) => (
                                         <Text key={index} style={{ marginRight: 10 }}>
-                                            #{tag.label}
+                                            {" #" + tag.label}
                                         </Text>
                                     ))}
                                 </Text>

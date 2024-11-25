@@ -78,7 +78,9 @@ export default function BookRestApi({ navigation, route }) {
 
                             <View style={{
                                 fontSize: 18,
-                                backgroundColor: '#695F5F',
+                                backgroundColor: '#fafaf7',
+                                borderColor:"lightgrey",
+                                borderBottomWidth: 1,
                                 padding: 20,
                                 width: "90%",
                                 marginVertical: 10,
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 2,
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#fafaf7',
 
     },
 });
