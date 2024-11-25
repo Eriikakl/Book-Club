@@ -22,6 +22,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
     const [book, setBook] = useState([]);
     const [isCreator, setIsCreator] = useState(false);
     const [books, setBooks] = useState([]);
+    const [imageUri, setImageUri] = useState(null);
 
     // hakee viimeisimmän lisätyn kirjan 
     useEffect(() => {
@@ -81,7 +82,6 @@ export default function ClubDetailsScreen({ route, navigation }) {
 
     // Profiilikuvan valinta
     const pickImage = async () => {
-
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
             console.log("Permission not granted");
@@ -93,12 +93,20 @@ export default function ClubDetailsScreen({ route, navigation }) {
             aspect: [4, 3],
             quality: 1,
         });
-
+    
         if (!result.canceled) {
-            const imageUri = result.assets[0].uri;
-            const clubsRef = ref(database, `clubs/${club.id}`);
-            await update(clubsRef, { image: imageUri });
-            console.log("Kuva tallennettu onnistuneesti:", imageUri);
+            const newImageUri = result.assets[0].uri;
+    
+            try {
+                const clubsRef = ref(database, `clubs/${club.id}`);
+                await update(clubsRef, { image: newImageUri });
+                console.log("Kuva tallennettu onnistuneesti:", newImageUri);
+    
+                // Päivitä käyttöliittymä heti
+                setImageUri(newImageUri);
+            } catch (error) {
+                console.error("Kuvan tallennuksessa tapahtui virhe:", error);
+            }
         }
     };
 
@@ -168,11 +176,11 @@ export default function ClubDetailsScreen({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.top}>
-                {club.image ? (
+                {imageUri ? (
                     // klubilla on kuva
                     <TouchableOpacity onPress={isFollowing ? pickImage : null}>
                         <Image
-                            source={{ uri: club.image }}
+                            source={{ uri: imageUri }}
                             style={styles.image}
                         />
                     </TouchableOpacity>
