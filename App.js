@@ -49,11 +49,11 @@ export default function App() {
                       tabBarIcon: ({ color, size }) => {
                         let iconName;
 
-                        if (route.name === "Home") {
+                        if (route.name === "Koti") {
                           iconName = "home";
-                        } else if (route.name === "Clubs") {
+                        } else if (route.name === "Lukupiirit") {
                           iconName = "book";
-                        } else if (route.name === "Profile") {
+                        } else if (route.name === "Profiili") {
                           iconName = "user";
                           return <Entypo name="user" size={size} color={color} />;
                         }
@@ -65,7 +65,7 @@ export default function App() {
                       tabBarInactiveTintColor: 'lightgray',
                     })}>
                     <Tab.Screen
-                      name="Home"
+                      name="Koti"
                       component={HomeScreen}
                       options={{
                         headerShown: true,
@@ -79,12 +79,12 @@ export default function App() {
                       }}
                     />
                     <Tab.Screen
-                      name="Clubs"
+                      name="Lukupiirit"
                       component={ClubsStackScreen}
                       options={{ headerShown: false }}
                     />
                     <Tab.Screen
-                      name="Profile"
+                      name="Profiili"
                       component={ProfileScreen}
                       options={{
                         headerShown: true,
