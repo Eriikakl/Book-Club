@@ -22,7 +22,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
     const [book, setBook] = useState([]);
     const [isCreator, setIsCreator] = useState(false);
     const [books, setBooks] = useState([]);
-    const [imageUri, setImageUri] = useState(null);
+    const [imageUri, setImageUri] = useState(club.image);
 
     // hakee viimeisimmän lisätyn kirjan 
     useEffect(() => {
@@ -199,7 +199,14 @@ export default function ClubDetailsScreen({ route, navigation }) {
             </View>
             <View style={styles.top}><Text style={{ fontSize: 28, fontFamily: 'Barlow_400Regular' }}>{club.name}</Text>
                 <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.followersCount > 0 ? club.followersCount : 0} jäsentä</Text>
-                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.description}</Text></View>
+                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.description}</Text>
+                <Text style={{ fontSize: 14, fontFamily: 'Barlow_400Regular' }}>
+                    {club.tags.map((tag, index) => (
+                                        <Text key={index} style={{ marginRight: 10 }}>
+                                            {" #" + tag.label}
+                                        </Text>
+                                    ))}</Text>
+                </View>
 
             <View style={styles.afterTop}>
                 <Button
