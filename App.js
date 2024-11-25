@@ -11,12 +11,21 @@ import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { UserProvider } from './components/UserContext';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { useFonts } from 'expo-font';
+import { Barlow_400Regular, Barlow_700Bold } from '@expo-google-fonts/barlow';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+
 export default function App() {
+   useFonts({
+    Barlow_400Regular,
+    Barlow_700Bold,
+  });
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
 
   // Tarkistetaan onko käyttäjä kirjautuneena
   useEffect(() => {
