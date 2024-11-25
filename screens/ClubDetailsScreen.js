@@ -197,13 +197,13 @@ export default function ClubDetailsScreen({ route, navigation }) {
                     </View>
                 )}
             </View>
-            <View style={styles.top}><Text style={{ fontSize: 28 }}>{club.name}</Text>
-                <Text>{club.followersCount > 0 ? club.followersCount : 0} jäsentä</Text>
-                <Text style={{ fontSize: 16 }}>{club.description}</Text></View>
+            <View style={styles.top}><Text style={{ fontSize: 28, fontFamily: 'Barlow_400Regular' }}>{club.name}</Text>
+                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.followersCount > 0 ? club.followersCount : 0} jäsentä</Text>
+                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.description}</Text></View>
 
             <View style={styles.afterTop}>
                 <Button
-                    labelStyle={{ color: 'black' }}
+                    labelStyle={{ color: 'black', fontFamily: 'Barlow_400Regular' }}
                     mode="outlined"
                     onPress={handleFollow}
                 >{isFollowing ? 'Poistu' : 'Liity'}
@@ -212,7 +212,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
                     <>
 
                         <Button
-                            labelStyle={{ color: 'black' }}
+                            labelStyle={{ color: 'black', fontFamily: 'Barlow_400Regular' }}
                             mode="outlined"
                             onPress={() => navigation.navigate('ChatScreen', { club, user })}
                         >Keskustelu</Button>
@@ -221,11 +221,11 @@ export default function ClubDetailsScreen({ route, navigation }) {
             </View>
             <ScrollView style={{ maxHeight: 400 }}>
                 <View style={styles.booktitle}>
-                    <Text style={{ fontSize: 18 }}>Luettava kirja:</Text>
+                    <Text style={{ fontSize: 18, fontFamily: 'Barlow_700Regular' }}>Luettava kirja:</Text>
                     {(isFollowing && isCreator) && (
                         <>
                             <Button
-                                labelStyle={{ color: 'black' }}
+                                labelStyle={{ color: 'black', fontFamily: 'Barlow_400Regular' }}
                                 mode="outlined"
                                 onPress={() => navigation.navigate('BookApi', { club })}
                             >Hae kirja</Button>
@@ -237,6 +237,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
                     {book.title ? (
                         <Text style={{
                             fontSize: 16,
+                            fontFamily: 'Barlow_400Regular',
                             maxWidth: 115,
                             overflow: 'hidden',
                             flexShrink: 1
@@ -251,7 +252,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
 
                 </View>
                 <View style={styles.booktitle}>
-                    <Text style={{ fontSize: 18 }}>Lukuhistoria:</Text>
+                    <Text style={{ fontSize: 18, fontFamily: 'Barlow_700Regular' }}>Lukuhistoria:</Text>
                 </View>
                 <View style={styles.books}>
                     {books.length > 0 ? (
@@ -268,6 +269,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
                                         <Text style={{
                                             fontSize: 16,
                                             maxWidth: 100,
+                                            fontFamily: 'Barlow_400Regular',
                                             overflow: 'hidden',
                                             flexShrink: 1
                                         }}
@@ -310,7 +312,7 @@ const styles = StyleSheet.create({
     top: {
         alignItems: "center",
         flexDirection: "column",
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
     },
     afterTop: {
         marginTop: 10,

@@ -21,7 +21,7 @@ export default function ClubsStackScreen() {
 
                     headerTintColor: "black",
                     headerTitleStyle: {
-                        fontWeight: 'bold'
+                        fontFamily: 'Barlow_700Regular'
                     },
                 }} />
 
@@ -35,7 +35,7 @@ export default function ClubsStackScreen() {
 
                     headerTintColor: "black",
                     headerTitleStyle: {
-                        fontWeight: 'bold'
+                        fontFamily: 'Barlow_700Regular'
                     },
                 }} />
 
@@ -49,7 +49,7 @@ export default function ClubsStackScreen() {
 
                     headerTintColor: "black",
                     headerTitleStyle: {
-                        fontWeight: 'bold'
+                        fontFamily: 'Barlow_700Regular'
                     },
                 }} />
 
@@ -63,7 +63,7 @@ export default function ClubsStackScreen() {
 
                     headerTintColor: "black",
                     headerTitleStyle: {
-                        fontWeight: 'bold'
+                        fontFamily: 'Barlow_700Regular'
                     },
                 }} />
 
@@ -77,7 +77,7 @@ export default function ClubsStackScreen() {
 
                     headerTintColor: "black",
                     headerTitleStyle: {
-                        fontWeight: 'bold'
+                        fontFamily: 'Barlow_700Regular'
                     },
                 }} />
         </Stack.Navigator>

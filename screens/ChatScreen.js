@@ -57,7 +57,7 @@ export default function ChatScreen({ route }) {
 
                 renderItem={({ item }) => (
                     <View style={styles.messageItem}>
-                        <Text style={styles.timestamp}>
+                        <Text style={{fontFamily: 'Barlow_400Regular'}}>
                             {new Date(item.timestamp).toLocaleString("fi-FI", {
                                 year: 'numeric',
                                 month: '2-digit',
@@ -66,9 +66,9 @@ export default function ChatScreen({ route }) {
                                 minute: '2-digit'
 
                             })}
-                            <Text> @{item.user.charAt(0).toUpperCase() + user.username.slice(1)}</Text>
+                            <Text style={{fontFamily: 'Barlow_400Regular'}}> @{item.user.charAt(0).toUpperCase() + user.username.slice(1)}</Text>
                         </Text>
-                        <Text>{item.text}</Text>
+                        <Text style={{fontFamily: 'Barlow_400Regular'}}>{item.text}</Text>
                     </View>
                 )}
             />
@@ -99,13 +99,11 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
         marginBottom: 16,
+        fontFamily: 'Barlow_400Regular'
     },
     input: {
         backgroundColor: "white",
-        
-        
     },
     messageItem: {
         padding: 10,

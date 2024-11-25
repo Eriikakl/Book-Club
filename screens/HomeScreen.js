@@ -55,16 +55,16 @@ export default function HomeScreen() {
     <View style={styles.container}>
 
 
-      <View style={{ fontSize: 20 }}>
+      <View>
         {user ? (
-          <Text style={{ fontSize: 20 }}>Tervetuloa takaisin, {user.username.charAt(0).toUpperCase() + user.username.slice(1)}!</Text>
+          <Text style={{ fontSize: 20, fontFamily: 'Barlow_400Regular' }}>Tervetuloa takaisin, {user.username.charAt(0).toUpperCase() + user.username.slice(1)}!</Text>
         ) : (
-          <Text style={{ fontSize: 20 }}>Kirjaudu, jotta näet kaikki ominaisuudet.</Text>
+          <Text style={{ fontSize: 20, fontFamily: 'Barlow_400Regular' }}>Kirjaudu, jotta näet kaikki ominaisuudet.</Text>
         )}
       </View>
 
       <View style={{}}>
-        <Text style={{ fontSize: 24, justifyContent: 'flex-start' }}>Suosituimmat lukupiirit:</Text>
+        <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Suosituimmat lukupiirit:</Text>
         {topClubs ? (
           topClubs.length > 0 ? (
             topClubs.map((club, index) => (
@@ -78,7 +78,7 @@ export default function HomeScreen() {
                 justifyContent: "flex-start"
 
               }}>
-                <Text>{club.clubName} - {club.followersCount} jäsentä</Text>
+                <Text style={{ fontSize: 20, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>{club.clubName} - {club.followersCount} jäsentä</Text>
               </View>
             ))
           ) : (
@@ -87,7 +87,7 @@ export default function HomeScreen() {
         ) : (
           <Text>Ladataan seuraamiasi lukupiirejä...</Text>
         )}
-        <Text style={{ fontSize: 24, justifyContent: 'flex-start' }}>Luetuimmat kirjat:</Text>
+        <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Luetuimmat kirjat:</Text>
       </View>
     </View>
   );

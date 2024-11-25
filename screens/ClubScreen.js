@@ -78,13 +78,13 @@ export default function ClubsScreen({ navigation }) {
                             )}
 
                             <View style={{ flexDirection: 'column', justifyContent: 'flex-start', width: '70%' }}>
-                                <Text style={{ fontSize: 20, marginLeft: 20, color: '#695F5F' }} numberOfLines={1}>
+                                <Text style={{ fontSize: 20, marginLeft: 20, color: '#695F5F', fontFamily: 'Barlow_400Regular' }} numberOfLines={1}>
                                     {item.name}
                                 </Text>
-                                <Text style={{ fontSize: 16, marginLeft: 20, color: '#695F5F' }} numberOfLines={1} ellipsizeMode="tail">
+                                <Text style={{ fontSize: 16, marginLeft: 20, color: '#695F5F', fontFamily: 'Barlow_400Regular' }} numberOfLines={1} ellipsizeMode="tail">
                                     {item.description}
                                 </Text>
-                                <Text style={{ fontSize: 14, marginLeft: 20, marginTop: 20, color: '#695F5F' }} numberOfLines={2} ellipsizeMode="tail">
+                                <Text style={{ fontSize: 14, marginLeft: 20, marginTop: 20, color: '#695F5F', fontFamily: 'Barlow_400Regular' }} numberOfLines={2} ellipsizeMode="tail">
                                     {item.tags.map((tag, index) => (
                                         <Text key={index} style={{ marginRight: 10 }}>
                                             #{tag.label}

@@ -61,8 +61,7 @@ export default function BookRestApi({ navigation, route }) {
                     value={keyword}
                 />
                 <Button
-                    style={{}}
-                    labelStyle={{ color: 'black' }}
+                    labelStyle={{ color: 'black', fontFamily: 'Barlow_400Regular' }}
                     mode="outlined"
                     title="Search"
                     onPress={handleFetch}>Etsi</Button>
@@ -91,8 +90,8 @@ export default function BookRestApi({ navigation, route }) {
                             }}>
                                 <Image source={!item.volumeInfo.imageLinks?.smallThumbnail ? require('../components/images/noimage.png') : { uri: item.volumeInfo.imageLinks.smallThumbnail }} style={{ width: 50, height: 80 }}></Image>
                                 <View style={{ flexDirection: "column", justifyContent: 'flex-start', alignItems: 'baseline' }}>
-                                    <Text style={{ flexWrap: 'wrap', flexShrink: 1, maxWidth: 200, fontSize: 18, marginLeft: 20 }}>{item.volumeInfo.authors ? item.volumeInfo.authors[0] : 'Unknown'}</Text>
-                                    <Text style={{ flexWrap: 'wrap', flexShrink: 1, maxWidth: 200, fontSize: 14, marginLeft: 20 }}>{item.volumeInfo.title}</Text>
+                                    <Text style={{ flexWrap: 'wrap', flexShrink: 1, maxWidth: 200, fontSize: 18, marginLeft: 20, fontFamily: 'Barlow_400Regular' }}>{item.volumeInfo.authors ? item.volumeInfo.authors[0] : 'Unknown'}</Text>
+                                    <Text style={{ flexWrap: 'wrap', flexShrink: 1, maxWidth: 200, fontSize: 14, marginLeft: 20, fontFamily: 'Barlow_400Regular' }}>{item.volumeInfo.title}</Text>
                                 </View>
 
                             </View>

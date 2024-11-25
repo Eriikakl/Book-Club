@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         marginBottom: 20,
+        fontFamily: 'Barlow_400Regular'
     },
     input: {
         height: 40,
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginBottom: 15,
         paddingHorizontal: 10,
+        fontFamily: 'Barlow_400Regular'
     },
     tagButton: {
         paddingVertical: 10,
@@ -163,6 +165,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         backgroundColor: '#f5f5f5',
+        fontFamily: 'Barlow_400Regular'
     },
     selectedTag: {
         backgroundColor: '#cfbaba',
@@ -170,8 +173,10 @@ const styles = StyleSheet.create({
     tagText: {
         fontSize: 16,
         color: '#333',
+        fontFamily: 'Barlow_400Regular'
     },
     selectedTagText: {
         color: '#fff',
+        fontFamily: 'Barlow_400Regular'
     },
 });

@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
         fontSize: 46,
-        fontWeight: 'bold',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         width: 400,
         borderRadius: 5,
         marginTop: 100,
-        padding: 80
+        padding: 80,
+        fontFamily: 'Barlow_400Regular',
     },
     input: {
         width: '70%',

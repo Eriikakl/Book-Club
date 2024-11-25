@@ -10,7 +10,7 @@ import ClubsStackScreen from './screens/ClubStack';
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { UserProvider } from './components/UserContext';
-import { Provider as PaperProvider } from 'react-native-paper'
+import { Provider as PaperProvider } from 'react-native-paper';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -74,7 +74,7 @@ export default function App() {
                         },
                         headerTintColor: "black",
                         headerTitleStyle: {
-                          fontWeight: 'bold',
+                          fontFamily: 'Barlow_700Regular'
                         },
                       }}
                     />
@@ -93,7 +93,7 @@ export default function App() {
                         },
                         headerTintColor: "black",
                         headerTitleStyle: {
-                          fontWeight: 'bold',
+                          fontFamily: 'Barlow_700Regular'
                         },
                       }}
                     />

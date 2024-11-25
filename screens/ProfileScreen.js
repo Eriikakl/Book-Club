@@ -36,7 +36,7 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <View style={{ fontSize: 20, justifyContent: 'flex-end' }}>
-        <Text style={{ fontSize: 28, justifyContent: 'flex-start' }}>Seuraamasi lukupiirit:</Text>
+        <Text style={{ fontSize: 28, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Seuraamasi lukupiirit:</Text>
         {clubNames ? (
           clubNames.length > 0 ? (
             clubNames.map((club, index) => (
@@ -50,7 +50,7 @@ export default function ProfileScreen() {
                 justifyContent: "flex-start"
 
               }}>
-                <Text style={{ fontSize: 20 }} key={index}>{club}</Text>
+                <Text style={{ fontSize: 20, fontFamily: 'Barlow_400Regular' }} key={index}>{club}</Text>
               </View>
             ))
           ) : (
