@@ -62,7 +62,7 @@ export default function CreateClubScreen({ navigation }) {
                 if (snapshot.exists()) {
                     // Jos saman niminen klubi löytyy, näytä viesti
                     console.error("Club with the same name already exists.");
-                    alert("A club with the same name already exists. Please choose a different name.");
+                    alert("Nimi on jo käytössä. Valitse uusi nimi.");
                 } else {
                     // Luodaan uusi klubi, koska samannimistä ei ole
                     const newClubRef = push(clubsRef);
@@ -96,16 +96,16 @@ export default function CreateClubScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Create New Club</Text>
+            <Text style={styles.title}>Luo uusi lukupiiri</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Club Name"
+                placeholder="Nimi"
                 value={club.name}
                 onChangeText={text => setClub({ ...club, name: text })}
             />
             <TextInput
                 style={styles.input}
-                placeholder="Club Description"
+                placeholder="Kuvaus"
                 value={club.description}
                 onChangeText={text => setClub({ ...club, description: text })}
             />
@@ -131,7 +131,7 @@ export default function CreateClubScreen({ navigation }) {
                 ))}
             </ScrollView>
 
-            <Button title="Create" onPress={handleCreateClub} color="#666" />
+            <Button title="Tallenna" onPress={handleCreateClub} color="#666" />
         </View>
     );
 

@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { TouchableOpacity, Text } from 'react-native';
 import ClubsScreen from './ClubScreen';
 import ClubDetailsScreen from './ClubDetailsScreen';
 import CreateClubScreen from './CreateClubScreen';
@@ -15,7 +14,7 @@ export default function ClubsStackScreen() {
             <Stack.Screen name="Club" component={ClubsScreen}
 
                 options={{
-                    title: "Book Clubs",
+                    title: "Lukupiirit",
                     headerStyle: {
                         backgroundColor: "#cfbaba"
                     },
@@ -29,7 +28,7 @@ export default function ClubsStackScreen() {
             {/* Details of Book Club */}
             <Stack.Screen name="ClubDetails" component={ClubDetailsScreen}
                 options={{
-                    title: 'Details',
+                    title: 'Lukupiiri',
                     headerStyle: {
                         backgroundColor: "#cfbaba"
                     },
@@ -43,7 +42,7 @@ export default function ClubsStackScreen() {
             {/* Create new Book Club -form */}
             <Stack.Screen name="CreateClub" component={CreateClubScreen}
                 options={{
-                    title: 'New Book Club',
+                    title: 'Uusi lukupiiri',
                     headerStyle: {
                         backgroundColor: "#cfbaba"
                     },
@@ -57,7 +56,7 @@ export default function ClubsStackScreen() {
             {/* Search book for Book Club */}
             <Stack.Screen name="BookApi" component={BookRestApi}
                 options={{
-                    title: 'Search book',
+                    title: 'Etsi kirja',
                     headerStyle: {
                         backgroundColor: "#cfbaba"
                     },
@@ -71,7 +70,7 @@ export default function ClubsStackScreen() {
             {/* Chat for Book Club */}
             <Stack.Screen name="ChatScreen" component={ChatScreen}
                 options={{
-                    title: 'Chat',
+                    title: 'Keskustelu',
                     headerStyle: {
                         backgroundColor: "#cfbaba"
                     },
