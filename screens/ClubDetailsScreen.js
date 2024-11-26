@@ -3,6 +3,8 @@ import { Button } from 'react-native-paper';
 import { useUser } from '../components/UserContext';
 import { useState, useEffect } from 'react';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 import * as ImagePicker from 'expo-image-picker';
 
 import { getAuth } from 'firebase/auth';
@@ -23,6 +25,69 @@ export default function ClubDetailsScreen({ route, navigation }) {
     const [isCreator, setIsCreator] = useState(false);
     const [books, setBooks] = useState([]);
     const [imageUri, setImageUri] = useState(club.image);
+    const [date, setDate] = useState(null);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
+
+    // Tallennetaan lukupiirin kokoontumisaika tietokantaan
+    const onDateChange = async (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setShowDatePicker(false);
+        setDate(currentDate);
+
+        try {
+            const DateTime = new Date(currentDate).toISOString();
+            const dateRef = ref(database, `clubs/${club.id}`);
+            await update(dateRef, { dateTime: DateTime });
+            console.log("Date updated in Firebase:", DateTime);
+        } catch (error) {
+            console.error("Error updating date:", error);
+        }
+        showTimePickerModal();
+    };
+
+    const onTimeChange = async (event, selectedTime) => {
+
+        if (selectedTime) {
+            setShowTimePicker(false);
+            
+            try {
+                const newDate = new Date(date || new Date()); 
+                newDate.setHours(selectedTime.getHours(), selectedTime.getMinutes()); 
+    
+                const DateTime = newDate.toISOString();  
+                setDate(newDate);  
+                const timeRef = ref(database, `clubs/${club.id}`);
+                await update(timeRef, { dateTime: DateTime });
+    
+                console.log("Time updated in Firebase:", DateTime);
+            } catch (error) {
+                console.error("Error updating time:", error);
+            }
+        }
+        
+        
+    };
+
+    useEffect(() => {
+        const dateRef = ref(database, `clubs/${club.id}`);
+        const unsubscribe = onValue(dateRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.dateTime) {
+                setDate(new Date(data.dateTime));
+            }
+        });
+
+        return () => unsubscribe();
+    }, [club.id]);
+
+    const showDatePickerModal = () => {
+        setShowDatePicker(true);
+    };
+
+    const showTimePickerModal = () => {
+        setShowTimePicker(true);
+    };
 
     // hakee viimeisimmän lisätyn kirjan 
     useEffect(() => {
@@ -93,15 +158,15 @@ export default function ClubDetailsScreen({ route, navigation }) {
             aspect: [4, 3],
             quality: 1,
         });
-    
+
         if (!result.canceled) {
             const newImageUri = result.assets[0].uri;
-    
+
             try {
                 const clubsRef = ref(database, `clubs/${club.id}`);
                 await update(clubsRef, { image: newImageUri });
                 console.log("Kuva tallennettu onnistuneesti:", newImageUri);
-    
+
                 // Päivitä käyttöliittymä heti
                 setImageUri(newImageUri);
             } catch (error) {
@@ -131,7 +196,17 @@ export default function ClubDetailsScreen({ route, navigation }) {
         }
     }, [user, club.name]);
 
-
+    // Muokataan päivämäärä sopivammaksi
+    const formatDate = (dateTime) => {
+        const date = new Date(dateTime);
+        return date.toLocaleString('fi-FI', {
+            hour12: false,
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+    };
 
     // suorittaa seuraamiseen tai seuraamisen lopettamiseen tarvittavat toiminnot
     const handleFollow = async () => {
@@ -193,22 +268,31 @@ export default function ClubDetailsScreen({ route, navigation }) {
                                 style={styles.image}
                             />
                         </TouchableOpacity>
-
+                        
                     </View>
                 )}
-            </View>
-            <View style={styles.top}><Text style={{ fontSize: 28, fontFamily: 'Barlow_400Regular' }}>{club.name}</Text>
+                <View style={styles.topText}>
+                <Text style={{ fontSize: 28, fontFamily: 'Barlow_400Regular' }}>{club.name}</Text>
                 <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.followersCount > 0 ? club.followersCount : 0} jäsentä</Text>
-                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.description}</Text>
-                <Text style={{ fontSize: 14, fontFamily: 'Barlow_400Regular' }}>
+                 <Text style={{ fontSize: 14, fontFamily: 'Barlow_400Regular' }}>
                     {club.tags.map((tag, index) => (
-                                        <Text key={index} style={{ marginRight: 10 }}>
-                                            {" #" + tag.label}
-                                        </Text>
-                                    ))}</Text>
+                        <Text key={index} style={{ marginRight: 10 }}>
+                            {" #" + tag.label}
+                        </Text>
+                    ))}</Text>
                 </View>
-
+                
+            </View>
             <View style={styles.afterTop}>
+                
+                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.description}</Text>
+               
+                     <Text style={{ fontSize: 18, fontFamily: 'Barlow_400Regular' }}>
+                        Seuraava tapaaminen: {date !== null ? formatDate(date) : 'Ei asetettu'}
+                    </Text>
+            </View>
+
+            <View style={styles.buttons}>
                 <Button
                     labelStyle={{ color: 'black', fontFamily: 'Barlow_400Regular' }}
                     mode="outlined"
@@ -225,7 +309,38 @@ export default function ClubDetailsScreen({ route, navigation }) {
                         >Keskustelu</Button>
                     </>
                 )}
+                {(isFollowing && isCreator) && (
+                    <Button labelStyle={{ color: 'black', fontFamily: 'Barlow_400Regular' }}
+                        mode="outlined"
+                        onPress={showDatePickerModal}
+                    >Muokkaa aika</Button>
+                )}
             </View>
+            <View>
+               
+
+
+                {showDatePicker && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date || new Date()}
+                        mode="date"
+                        is24Hour={true}
+                        onChange={onDateChange}
+                    />
+                )}
+
+                {showTimePicker && (
+                    <DateTimePicker
+                        testID="timePicker"
+                        value={date || new Date()}
+                        mode="time"
+                        is24Hour={true}
+                        onChange={onTimeChange}
+                    />
+                )}
+            </View>
+
             <ScrollView style={{ maxHeight: 400 }}>
                 <View style={styles.booktitle}>
                     <Text style={{ fontSize: 18, fontFamily: 'Barlow_700Regular' }}>Luettava kirja:</Text>
@@ -303,6 +418,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -317,11 +433,20 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     top: {
-        alignItems: "center",
+        alignItems: "flex-start",
+        justifyContent: 'flex-start',
+        flexDirection: "row",
+    },
+    topText: {
         flexDirection: "column",
-        justifyContent: 'space-around',
+        marginLeft: 20
     },
     afterTop: {
+        flexDirection: "column",
+        marginLeft: 20,
+        alignItems: 'center'
+    },
+    buttons: {
         marginTop: 10,
         alignItems: "flex-start",
         flexDirection: "row",

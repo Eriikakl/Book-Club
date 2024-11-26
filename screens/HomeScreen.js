@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 // yhteys projektiin
 import { app } from '../firebaseConfig';
 // yhteys projektin palveluihin
-import { getDatabase, ref, onValue, get } from 'firebase/database';
+import { getDatabase, ref, onValue } from 'firebase/database';
 
 const database = getDatabase(app);
 
@@ -50,7 +50,7 @@ export default function HomeScreen() {
     return () => unsubscribe();
   }, []);
 
-// Haetaan käytetyimmät tag:it
+  // Haetaan käytetyimmät tag:it
   useEffect(() => {
     const clubsRef = ref(database, '/clubs');
     const unsubscribe = onValue(clubsRef, (snapshot) => {
@@ -125,17 +125,20 @@ export default function HomeScreen() {
           <Text>Ladataan seuraamiasi lukupiirejä...</Text>
         )}
         <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Suosituin kategoria:</Text>
-        <View style={{
-          backgroundColor: '#ede4e4',
-          padding: 20,
-          marginVertical: 8,
-          marginHorizontal: 16,
-          width: "300",
-          flexDirection: "row",
-          justifyContent: "flex-start"
+        {popularTag ? (
+          <View style={{
+            backgroundColor: '#ede4e4',
+            padding: 20,
+            marginVertical: 8,
+            marginHorizontal: 16,
+            width: "300",
+            flexDirection: "row",
+            justifyContent: "flex-start"
 
-        }}><Text style={{ fontSize: 20, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>{popularTag}</Text></View>
-
+          }}><Text style={{ fontSize: 20, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>{popularTag}</Text></View>
+        ) : (
+          <Text>Suosituinta kategoriaa ei ole :(</Text>
+        )}
       </View>
     </View>
   );

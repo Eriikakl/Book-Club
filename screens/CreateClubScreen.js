@@ -15,18 +15,18 @@ export default function CreateClubScreen({ navigation }) {
     const [club, setClub] = useState({ name: "", description: "", books: [], image: "", creator: null, tags: [] });
 
     const tagOptions = [
-        { label: 'Adventure', value: 'adventure' },
-        { label: 'True crime', value: 'true crime' },
-        { label: 'Fantasy', value: 'fantasy' },
-        { label: 'Sci-Fi', value: 'scifi' },
-        { label: 'Mystery', value: 'mystery' },
-        { label: 'Classic', value: 'classic' },
-        { label: 'Dystopian', value: 'dystopian' },
-        { label: 'Horror', value: 'horror' },
-        { label: 'Thriller', value: 'thriller' },
-        { label: 'Historical fiction', value: 'historical fiction' },
-        { label: 'Romance', value: 'romance' },
-        { label: 'Young adult', value: 'young adult' },
+        { label: 'Seikkailu', value: 'seikkailu' },
+        { label: 'Elämäkerrat', value: 'elämäkerrat' },
+        { label: 'Fantasia', value: 'fantasia' },
+        { label: 'Dekkarit', value: 'dekkarit' },
+        { label: 'Nuoret', value: 'nuoret' },
+        { label: 'Klassikot', value: 'klassikot' },
+        { label: 'Scifi', value: 'scifi' },
+        { label: 'Kauhu', value: 'kauhu' },
+        { label: 'Jännitys', value: 'jännitys' },
+        { label: 'Historia', value: 'historia' },
+        { label: 'Romantiikka', value: 'romantiikka' },
+        { label: 'Tietokirjat', value: 'tietokirjat' },
     ];
 
     // Käsitellään valitut tagit

@@ -39,7 +39,7 @@ export default function ClubsScreen({ navigation }) {
             setFilteredClubs(clubs);
         } else {
             const filtered = clubs.filter(club =>
-                club.name.toLowerCase().includes(keyword.toLowerCase())
+                club.name.toLowerCase().includes(query.toLowerCase())
             );
             setFilteredClubs(filtered);
         }
