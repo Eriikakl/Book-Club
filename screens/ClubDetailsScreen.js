@@ -50,23 +50,23 @@ export default function ClubDetailsScreen({ route, navigation }) {
 
         if (selectedTime) {
             setShowTimePicker(false);
-            
+
             try {
-                const newDate = new Date(date || new Date()); 
-                newDate.setHours(selectedTime.getHours(), selectedTime.getMinutes()); 
-    
-                const DateTime = newDate.toISOString();  
-                setDate(newDate);  
+                const newDate = new Date(date || new Date());
+                newDate.setHours(selectedTime.getHours(), selectedTime.getMinutes());
+
+                const DateTime = newDate.toISOString();
+                setDate(newDate);
                 const timeRef = ref(database, `clubs/${club.id}`);
                 await update(timeRef, { dateTime: DateTime });
-    
+
                 console.log("Time updated in Firebase:", DateTime);
             } catch (error) {
                 console.error("Error updating time:", error);
             }
         }
-        
-        
+
+
     };
 
     useEffect(() => {
@@ -268,28 +268,28 @@ export default function ClubDetailsScreen({ route, navigation }) {
                                 style={styles.image}
                             />
                         </TouchableOpacity>
-                        
+
                     </View>
                 )}
                 <View style={styles.topText}>
-                <Text style={{ fontSize: 28, fontFamily: 'Barlow_400Regular' }}>{club.name}</Text>
-                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.followersCount > 0 ? club.followersCount : 0} jäsentä</Text>
-                 <Text style={{ fontSize: 14, fontFamily: 'Barlow_400Regular' }}>
-                    {club.tags.map((tag, index) => (
-                        <Text key={index} style={{ marginRight: 10 }}>
-                            {" #" + tag.label}
-                        </Text>
-                    ))}</Text>
+                    <Text style={{ fontSize: 28, fontFamily: 'Barlow_400Regular' }}>{club.name}</Text>
+                    <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.followersCount > 0 ? club.followersCount : 0} jäsentä</Text>
+                    <Text style={{ fontSize: 14, fontFamily: 'Barlow_400Regular' }}>
+                        {club.tags.map((tag, index) => (
+                            <Text key={index} style={{ marginRight: 10 }}>
+                                {" #" + tag.label}
+                            </Text>
+                        ))}</Text>
                 </View>
-                
+
             </View>
             <View style={styles.afterTop}>
-                
+
                 <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.description}</Text>
-               
-                     <Text style={{ fontSize: 18, fontFamily: 'Barlow_400Regular' }}>
-                        Seuraava tapaaminen: {date !== null ? formatDate(date) : 'Ei asetettu'}
-                    </Text>
+
+                <Text style={{ fontSize: 18, fontFamily: 'Barlow_400Regular' }}>
+                    Seuraava tapaaminen: {date !== null ? formatDate(date) : 'Ei asetettu'}
+                </Text>
             </View>
 
             <View style={styles.buttons}>
@@ -317,7 +317,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
                 )}
             </View>
             <View>
-               
+
 
 
                 {showDatePicker && (

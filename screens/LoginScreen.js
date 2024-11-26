@@ -29,39 +29,39 @@ const LoginScreen = () => {
     };
 
     return (
-        <View style={{flex: 1 }}>
+        <View style={{ flex: 1 }}>
 
             <ImageBackground
                 source={require('../components/images/bookclub.jpg')}
                 style={styles.image}
                 resizeMode="cover"
             >
-            <Text style={styles.text}>BookClub!</Text>
-            <View style={{ justifyContent: "center", alignItems: "center", marginTop: 20 }}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Sähköposti"
-                    placeholderTextColor="white"
-                    value={email}
-                    onChangeText={setEmail}
-                    activeUnderlineColor='#cfbaba'
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Salasana"
-                    placeholderTextColor="white"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                    activeUnderlineColor='#cfbaba'
-                />
-                <Button  
-                onPress={handleLogin} 
-                labelStyle={{ color: 'black', fontSize: 14, width: 100}}
-                mode="outlined" 
-                buttonColor="#cfbaba"
-                >Kirjaudu</Button>
-            </View>
+                <Text style={styles.text}>BookClub!</Text>
+                <View style={{ justifyContent: "center", alignItems: "center", marginTop: 20 }}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Sähköposti"
+                        placeholderTextColor="white"
+                        value={email}
+                        onChangeText={setEmail}
+                        activeUnderlineColor='#cfbaba'
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Salasana"
+                        placeholderTextColor="white"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                        activeUnderlineColor='#cfbaba'
+                    />
+                    <Button
+                        onPress={handleLogin}
+                        labelStyle={{ color: 'black', fontSize: 14, width: 100 }}
+                        mode="outlined"
+                        buttonColor="#cfbaba"
+                    >Kirjaudu</Button>
+                </View>
             </ImageBackground>
 
 
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         height: '100%',
-      },
+    },
     text: {
         color: 'white',
         fontSize: 46,

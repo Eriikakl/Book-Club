@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator();
 
 
 export default function App() {
-   useFonts({
+  useFonts({
     Barlow_400Regular,
     Barlow_700Bold,
   });

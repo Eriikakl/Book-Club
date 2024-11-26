@@ -66,7 +66,7 @@ export default function BookRestApi({ navigation, route }) {
                     title="Search"
                     onPress={handleFetch}>Etsi</Button>
             </View>
-            
+
             {loading ? (
                 <ActivityIndicator animating={true} size="small" color="#695F5F" />
             ) : (
@@ -79,7 +79,7 @@ export default function BookRestApi({ navigation, route }) {
                             <View style={{
                                 fontSize: 18,
                                 backgroundColor: '#fafaf7',
-                                borderColor:"lightgrey",
+                                borderColor: "lightgrey",
                                 borderBottomWidth: 1,
                                 padding: 20,
                                 width: "90%",

@@ -64,7 +64,7 @@ export default function ClubsScreen({ navigation }) {
                         <View
                             style={{
                                 backgroundColor: '#fafaf7',
-                                borderColor:"lightgrey",
+                                borderColor: "lightgrey",
                                 borderBottomWidth: 1,
                                 padding: 20,
                                 marginVertical: 8,
