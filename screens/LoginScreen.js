@@ -19,7 +19,8 @@ const LoginScreen = () => {
             console.log("User logged in:", user.email);
             login({
                 email: user.email,
-                username: user.email.split('@')[0].split('.')[0]
+                username: user.email.split('@')[0].split('.')[0],
+                uid: user.uid
             });
 
         } catch (error) {
