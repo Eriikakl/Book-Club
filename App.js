@@ -54,6 +54,7 @@ export default function App() {
               <Stack.Screen name="Main" options={{ headerShown: false }}>
                 {() => (
                   <Tab.Navigator
+                    lazy={false}
                     screenOptions={({ route }) => ({
                       tabBarIcon: ({ color, size }) => {
                         let iconName;
