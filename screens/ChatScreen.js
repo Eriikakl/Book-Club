@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
 // yhteys projektiin
 import { app } from '../firebaseConfig';
@@ -66,7 +66,7 @@ export default function ChatScreen({ route }) {
                                 minute: '2-digit'
 
                             })}
-                            <Text style={{fontFamily: 'Barlow_400Regular'}}> @{item.user.charAt(0).toUpperCase() + user.username.slice(1)}</Text>
+                            <Text style={{fontFamily: 'Barlow_400Regular'}}> @{item.user.charAt(0).toUpperCase() + item.user.slice(1)}</Text>
                         </Text>
                         <Text style={{fontFamily: 'Barlow_400Regular'}}>{item.text}</Text>
                     </View>
