@@ -48,7 +48,7 @@ export default function ClubsScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Searchbar
-                style={{ backgroundColor: "white" }}
+                style={{ backgroundColor: "#fafaf7" }}
                 placeholder="Etsi hakusanalla"
                 onChangeText={handleSearch}
                 value={keyword}
@@ -89,7 +89,7 @@ export default function ClubsScreen({ navigation }) {
                                 <Text style={{ fontSize: 14, marginLeft: 20, marginTop: 20, color: '#695F5F', fontFamily: 'Barlow_400Regular' }} numberOfLines={2} ellipsizeMode="tail">
                                     {item.tags.map((tag, index) => (
                                         <Text key={index} style={{ marginRight: 10 }}>
-                                            {" #" + tag.label}
+                                            {"#" + tag.label + " "}
                                         </Text>
                                     ))}
                                 </Text>

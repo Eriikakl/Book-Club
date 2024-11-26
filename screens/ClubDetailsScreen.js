@@ -277,7 +277,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
                     <Text style={{ fontSize: 14, fontFamily: 'Barlow_400Regular' }}>
                         {club.tags.map((tag, index) => (
                             <Text key={index} style={{ marginRight: 10 }}>
-                                {" #" + tag.label}
+                                {"#" + tag.label + " "}
                             </Text>
                         ))}</Text>
                 </View>
@@ -285,7 +285,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
             </View>
             <View style={styles.afterTop}>
 
-                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular' }}>{club.description}</Text>
+                <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular', padding: 10 }}>{club.description}</Text>
 
                 <Text style={{ fontSize: 18, fontFamily: 'Barlow_400Regular' }}>
                     Seuraava tapaaminen: {date !== null ? formatDate(date) : 'Ei asetettu'}
@@ -341,8 +341,8 @@ export default function ClubDetailsScreen({ route, navigation }) {
                 )}
             </View>
 
-            <ScrollView style={{ maxHeight: 400 }}>
-                <View style={styles.booktitle}>
+            <ScrollView style={{ maxHeight: 400, marginTop: 5 }}>
+                <View style={styles.title}>
                     <Text style={{ fontSize: 18, fontFamily: 'Barlow_700Regular' }}>Luettava kirja:</Text>
                     {(isFollowing && isCreator) && (
                         <>
@@ -373,7 +373,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
                     )}
 
                 </View>
-                <View style={styles.booktitle}>
+                <View style={styles.title}>
                     <Text style={{ fontSize: 18, fontFamily: 'Barlow_700Regular' }}>Lukuhistoria:</Text>
                 </View>
                 <View style={styles.books}>
@@ -439,7 +439,9 @@ const styles = StyleSheet.create({
     },
     topText: {
         flexDirection: "column",
-        marginLeft: 20
+        marginLeft: 20,
+        flexWrap:'nowrap',
+        width: 200
     },
     afterTop: {
         flexDirection: "column",
@@ -452,7 +454,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: 'space-evenly'
     },
-    booktitle: {
+    title: {
         alignItems: "baseline",
         flexDirection: "row",
         justifyContent: 'space-between',
@@ -460,7 +462,6 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: "lightgrey",
         paddingTop: 10,
-        fontWeight: '800',
 
     },
     book: {

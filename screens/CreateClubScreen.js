@@ -104,12 +104,12 @@ export default function CreateClubScreen({ navigation }) {
                 onChangeText={text => setClub({ ...club, name: text })}
             />
             <TextInput
-                style={styles.input}
+                style={styles.inputdesc}
                 placeholder="Kuvaus"
                 value={club.description}
                 onChangeText={text => setClub({ ...club, description: text })}
             />
-            <ScrollView style={{ maxHeight: 200 }}>
+            <ScrollView style={{ maxHeight: 210, marginBottom: 10 }}>
                 {tagOptions.map((item) => (
                     <TouchableOpacity
                         key={item.value}
@@ -152,9 +152,23 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
+        borderRadius: 15,
         marginBottom: 15,
         paddingHorizontal: 10,
         fontFamily: 'Barlow_400Regular'
+        
+    },
+    inputdesc: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginBottom: 15,
+        paddingHorizontal: 10,
+        borderRadius: 15,
+        fontFamily: 'Barlow_400Regular',
+        height: 100,
+        textAlignVertical: 'top',
+        
     },
     tagButton: {
         paddingVertical: 10,

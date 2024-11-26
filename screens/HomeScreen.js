@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { useUser } from '../components/UserContext';
 import { useState, useEffect } from 'react';
 
@@ -37,6 +37,7 @@ export default function HomeScreen() {
                 clubId: club.clubId,
                 clubName: clubData.name,
                 followersCount: club.followersCount,
+                imageUri: clubData.image
               });
             }
           });
@@ -93,15 +94,22 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <View>
+        <Image
+          source={require('../components/images/logo2.png')}
+          style={styles.image}
+          resizeMode="cover"
+        ></Image>
+      </View>
+      <View>
         {user ? (
           <Text style={{ fontSize: 20, fontFamily: 'Barlow_400Regular' }}>Tervetuloa takaisin, {user.username.charAt(0).toUpperCase() + user.username.slice(1)}!</Text>
         ) : (
           <Text style={{ fontSize: 20, fontFamily: 'Barlow_400Regular' }}>Kirjaudu, jotta näet kaikki ominaisuudet.</Text>
         )}
       </View>
+      <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Suosituimmat lukupiirit:</Text>
 
-      <View style={{}}>
-        <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Suosituimmat lukupiirit:</Text>
+      <View style={{ flexDirection: "row" }}>
         {topClubs ? (
           topClubs.length > 0 ? (
             topClubs.map((club, index) => (
@@ -110,12 +118,33 @@ export default function HomeScreen() {
                 padding: 20,
                 marginVertical: 8,
                 marginHorizontal: 16,
-                width: "300",
-                flexDirection: "row",
-                justifyContent: "flex-start"
-
+                width: "150",
+                height: "200",
               }}>
-                <Text style={{ fontSize: 20, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>{club.clubName} - {club.followersCount} jäsentä</Text>
+                <View style={{alignItems:'center'}}>
+                {club.imageUri ? (
+                <Image 
+                    source={{ uri: club.imageUri}}
+                    style={styles.clubimage}
+                  />
+                ) : (
+                  <Image
+                  source={require('../components/images/empty.png')}
+                  style={styles.clubimage}
+              />
+                )}
+                    <Text style={{ fontSize: 20, 
+                                  justifyContent: 'flex-start', 
+                                  fontFamily: 'Barlow_400Regular' }}>
+                                  {club.clubName}
+                    </Text>
+                    <Text style={{ fontSize: 16, 
+                                  justifyContent: 'flex-start', 
+                                  fontFamily: 'Barlow_400Regular' }}>
+                                 {club.followersCount} jäsentä
+                    </Text>
+                </View>
+                
               </View>
             ))
           ) : (
@@ -124,23 +153,24 @@ export default function HomeScreen() {
         ) : (
           <Text>Ladataan seuraamiasi lukupiirejä...</Text>
         )}
-        <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Suosituin kategoria:</Text>
-        {popularTag ? (
-          <View style={{
-            backgroundColor: '#ede4e4',
-            padding: 20,
-            marginVertical: 8,
-            marginHorizontal: 16,
-            width: "300",
-            flexDirection: "row",
-            justifyContent: "flex-start"
-
-          }}><Text style={{ fontSize: 20, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>{popularTag}</Text></View>
-        ) : (
-          <Text>Suosituinta kategoriaa ei ole :(</Text>
-        )}
       </View>
+      <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Suosituin kategoria:</Text>
+      {popularTag ? (
+        <View style={{
+          backgroundColor: '#ede4e4',
+          padding: 20,
+          marginVertical: 8,
+          marginHorizontal: 16,
+          width: "300",
+          flexDirection: "row",
+          justifyContent: "flex-start"
+
+        }}><Text style={{ fontSize: 20, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>{popularTag}</Text></View>
+      ) : (
+        <Text>Suosituinta kategoriaa ei ole :(</Text>
+      )}
     </View>
+
   );
 }
 
@@ -153,5 +183,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
+  image: {
+    width: 150,
+    height: 200,
+    borderRadius: 10,
+    overflow: 'hidden'
+  },
+  clubimage: {
+        width: 80,
+        height: 80,
+        borderRadius: 50,
+        overflow: 'hidden'
+  }
 
 });

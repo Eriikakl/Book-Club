@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Image, ScrollView } from 'react-native';
 import { useUser } from '../components/UserContext';
 import { useState, useEffect } from 'react';
 
@@ -56,14 +56,15 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../components/images/empty.png')}
+      <Image source={require('../components/images/profile.png')}
         style={styles.image}
       />
-      <View style={{ justifyContent: 'center' }}>
+      <View style={{ justifyContent: 'center', padding: 10 }}>
         <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>{user.username.charAt(0).toUpperCase() + user.username.slice(1)}</Text>
       </View>
 
-
+      <View style={{ height: 250, padding: 10 }}>
+      <View>
       {createdClubs.length === 0 ? (
         <Text style={{ fontSize: 16, fontFamily: 'Barlow_400Regular', marginTop: 20 }}>
           Sinulla ei vielä ole omia lukupiirejä</Text>
@@ -100,7 +101,10 @@ export default function ProfileScreen({ navigation }) {
 
             )}
           /></>)}
+          </View>
+          <View style={{ height: 250, padding: 10 }}>
       <Text style={{ fontSize: 24, justifyContent: 'flex-start', fontFamily: 'Barlow_400Regular' }}>Seuraamasi lukupiirit:</Text>
+      <ScrollView >
       {followedClubs ? (
         followedClubs.length > 0 ? (
           followedClubs.map((club, index) => (
@@ -108,7 +112,7 @@ export default function ProfileScreen({ navigation }) {
               backgroundColor: '#ede4e4',
               padding: 20,
               marginVertical: 8,
-              marginHorizontal: 16,
+              marginHorizontal: 7,
               width: "300",
               flexDirection: "row",
               justifyContent: "flex-start"
@@ -123,6 +127,9 @@ export default function ProfileScreen({ navigation }) {
       ) : (
         <Text>Ladataan seuraamiasi lukupiirejä...</Text>
       )}
+      </ScrollView>
+    </View>
+    </View>
     </View>
   );
 }
@@ -132,7 +139,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 2,
     backgroundColor: '#fafaf7',
-    justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 20,
   },

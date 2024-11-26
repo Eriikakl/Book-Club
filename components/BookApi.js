@@ -53,9 +53,9 @@ export default function BookRestApi({ navigation, route }) {
     };
     return (
         <View style={styles.container}>
-            <View style={{ width: "70%", flexDirection: "row", alignItems: "baseline", justifyContent: 'space-evenly' }}>
+            <View style={{ width: "70%", flexDirection: "row", alignItems: "baseline", justifyContent: 'space-evenly', marginLeft: 10 }}>
                 <Searchbar
-                    style={{ backgroundColor: "white" }}
+                    style={{ backgroundColor: "#fafaf7" }}
                     placeholder="Etsi hakusanalla"
                     onChangeText={text => setKeyword(text)}
                     value={keyword}
