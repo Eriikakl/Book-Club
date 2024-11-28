@@ -73,6 +73,8 @@ export default function App() {
                       },
                       tabBarActiveTintColor: '#695F5F',
                       tabBarInactiveTintColor: 'lightgray',
+                      tabBarActiveBackgroundColor: '#fafaf7',
+                      tabBarInactiveBackgroundColor: '#fafaf7'
                     })}>
                     <Tab.Screen
                       name="Koti"
