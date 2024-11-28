@@ -42,9 +42,8 @@ export default function ProfileScreen({ navigation }) {
       const unsubscribe = onValue(clubRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          // Suodatetaan seuratut klubit, joilla arvo on `true`
           const followedClubs = Object.keys(data).filter((clubName) => data[clubName] === true);
-          setfollowedClubs(followedClubs); // Tallennetaan klubien nimet
+          setfollowedClubs(followedClubs);
         } else {
           setfollowedClubs([]);
         }

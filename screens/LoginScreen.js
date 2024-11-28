@@ -16,7 +16,6 @@ const LoginScreen = () => {
 
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            console.log("User logged in:", user.email);
             login({
                 email: user.email,
                 username: user.email.split('@')[0].split('.')[0],

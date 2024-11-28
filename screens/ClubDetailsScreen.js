@@ -29,23 +29,21 @@ export default function ClubDetailsScreen({ route, navigation }) {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
 
-    // Tallennetaan lukupiirin kokoontumisaika tietokantaan
+    // Tallennetaan lukupiirin kokoontumispäivä tietokantaan
     const onDateChange = async (event, selectedDate) => {
-        const currentDate = selectedDate;
         setShowDatePicker(false);
-        setDate(currentDate);
+        setDate(selectedDate);
 
         try {
-            const DateTime = new Date(currentDate).toISOString();
+            const DateTime = new Date(selectedDate).toISOString();
             const dateRef = ref(database, `clubs/${club.id}`);
             await update(dateRef, { dateTime: DateTime });
-            console.log("Date updated in Firebase:", DateTime);
         } catch (error) {
             console.error("Error updating date:", error);
         }
         showTimePickerModal();
     };
-
+    // Tallennetaan lukupiirin kokoontumispäivä tietokantaan
     const onTimeChange = async (event, selectedTime) => {
 
         if (selectedTime) {
@@ -60,7 +58,6 @@ export default function ClubDetailsScreen({ route, navigation }) {
                 const timeRef = ref(database, `clubs/${club.id}`);
                 await update(timeRef, { dateTime: DateTime });
 
-                console.log("Time updated in Firebase:", DateTime);
             } catch (error) {
                 console.error("Error updating time:", error);
             }
@@ -68,7 +65,7 @@ export default function ClubDetailsScreen({ route, navigation }) {
 
 
     };
-
+    // Näytetään lukupiirin kokoontumispäivä ja aika
     useEffect(() => {
         const dateRef = ref(database, `clubs/${club.id}`);
         const unsubscribe = onValue(dateRef, (snapshot) => {
@@ -165,9 +162,6 @@ export default function ClubDetailsScreen({ route, navigation }) {
             try {
                 const clubsRef = ref(database, `clubs/${club.id}`);
                 await update(clubsRef, { image: newImageUri });
-                console.log("Kuva tallennettu onnistuneesti:", newImageUri);
-
-                // Päivitä käyttöliittymä heti
                 setImageUri(newImageUri);
             } catch (error) {
                 console.error("Kuvan tallennuksessa tapahtui virhe:", error);

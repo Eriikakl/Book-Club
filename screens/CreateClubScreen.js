@@ -61,7 +61,6 @@ export default function CreateClubScreen({ navigation }) {
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     // Jos saman niminen klubi löytyy, näytä viesti
-                    console.error("Club with the same name already exists.");
                     alert("Nimi on jo käytössä. Valitse uusi nimi.");
                 } else {
                     // Luodaan uusi klubi, koska samannimistä ei ole
@@ -80,7 +79,6 @@ export default function CreateClubScreen({ navigation }) {
 
                     set(newClubRef, clubData)
                         .then(() => {
-                            console.log("Club created:", clubData);
                             navigation.goBack();
                         })
                         .catch((error) => {

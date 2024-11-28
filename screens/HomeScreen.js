@@ -75,8 +75,6 @@ export default function HomeScreen() {
         const mostPopularTag = Object.keys(tagCounts).reduce((a, b) =>
           tagCounts[a] > tagCounts[b] ? a : b
         );
-
-        console.log("Most popular tag:", mostPopularTag, "Count:", tagCounts[mostPopularTag]);
         setPopularTag(mostPopularTag);
       } else {
         setPopularTag(null);
