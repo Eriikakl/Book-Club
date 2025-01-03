@@ -1,4 +1,27 @@
 # Sovellus
+Lukupiirisovellus, jossa käyttäjät voivat luoda uusia ryhmiä, liittyä ryhmiin sekä käydä keskusteluja ryhmäläisten kanssa 
+lukupiiriin valituista kirjoista. Sovelluksessa voi ryhmän luoja valita tapaamisajan sekä ryhmäläiset voivat vaihtaa profiilikuvan.
+
+## Teknologiat
+
+### Front-end 
+- React Native
+- Expo
+- React Navigation: Tab, Stack 
+- React Native Paper
+- Expo Font
+- JavaScript
+### Back-end 
+- Google Books API
+- Firebase Realtime Database
+- Firebase Authentication
+- Firebase SDK
+
+## Muut
+- Expo Image Picker: Profiilikuvan valinta
+- React Native Date Time Picker: Päivämäärän ja ajan valinta
+
+## Navigointi
 - Tab-navigoinnin rakenne
 
 ![1home](https://github.com/user-attachments/assets/c3cc3fca-75de-4ad5-a0fe-091a0a009608)![2clublist](https://github.com/user-attachments/assets/9ae6523b-8eac-4395-b8fb-d881a68d149b)![4clublistsearch](https://github.com/user-attachments/assets/b6b08af3-f534-4736-b54b-8af1ddd41efd)
@@ -14,22 +37,4 @@
 
 
 
-## Teknologiat
-
-### Front-end 
-- React Native
-- Expo
-- React Navigation
-- Navigointi: Tab, Stack 
-- React Native Paper
-- Expo Font
-- JavaScript
-### Back-end 
-- Firebase Realtime Database
-- Firebase Authentication
-- Firebase SDK
-
-## Muut
-- Expo Image Picker: Profiilikuvan valinta
-- React Native Date Time Picker: Päivämäärän ja ajan valinta
   
